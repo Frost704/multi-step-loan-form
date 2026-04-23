@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 
 export function Layout() {
   return (
-    <Container className="py-5">
+    <Container>
       <div className="mx-auto" style={{ maxWidth: 640 }}>
         <Outlet />
       </div>

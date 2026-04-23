@@ -1,24 +1,24 @@
 import { create } from 'zustand'
 import { APPLICATION_DEFAULTS } from './defaults'
-import type { LoanApplicationFormData } from './types'
+import type { LoanApplicationDraft } from './types'
 
 type ApplicationFormStore = {
-  draft: LoanApplicationFormData
-  updateDraft: (patch: Partial<LoanApplicationFormData>) => void
-  resetDraft: () => void
+  formData: LoanApplicationDraft
+  updateFormData: (patch: Partial<LoanApplicationDraft>) => void
+  resetFormData: () => void
 }
 
 export const useApplicationFormStore = create<ApplicationFormStore>(set => ({
-  draft: APPLICATION_DEFAULTS,
-  updateDraft: patch =>
+  formData: APPLICATION_DEFAULTS,
+  updateFormData: patch =>
     set(state => ({
-      draft: {
-        ...state.draft,
+      formData: {
+        ...state.formData,
         ...patch,
       },
     })),
-  resetDraft: () =>
+  resetFormData: () =>
     set({
-      draft: APPLICATION_DEFAULTS,
+      formData: APPLICATION_DEFAULTS,
     }),
 }))

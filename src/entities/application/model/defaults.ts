@@ -1,10 +1,10 @@
-import type { LoanApplicationFormData } from './types'
+import type { LoanApplicationDraft } from './types'
 
-export const APPLICATION_DEFAULTS: LoanApplicationFormData = {
+export const APPLICATION_DEFAULTS: LoanApplicationDraft = {
   phone: '',
   firstName: '',
   lastName: '',
-  gender: '',
+  gender: null,
   placeOfWork: '',
   address: '',
   amount: 200,

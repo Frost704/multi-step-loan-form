@@ -10,7 +10,7 @@ export default function LoanParametersPage() {
   }
 
   return (
-    <div className="d-flex justify-content-end">
+    <div>
       <Button variant="outlined" onClick={handleBackClick}>
         Back
       </Button>
