@@ -2,13 +2,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-import { useApplicationFormStore } from '@/entities/application'
+import { useApplicationFormStore } from '@/entities/application/model/application.store'
 import { APP_ROUTES } from '@/shared/constants/routes'
-import type { StepFormResult } from '@/shared/types/form'
+import type { StepFormWithBackResult } from '@/shared/types/form'
 
-import { personalInfoSchema, type PersonalInfoFormValues } from './personal-info.schema'
+import { addressWorkSchema, type AddressWorkFormValues } from './address-work.schema'
 
-export function usePersonalInfoForm(): StepFormResult<PersonalInfoFormValues> {
+export function useAddressWorkForm(): StepFormWithBackResult<AddressWorkFormValues> {
   const navigate = useNavigate()
 
   const formData = useApplicationFormStore(state => state.formData)
@@ -19,21 +19,23 @@ export function usePersonalInfoForm(): StepFormResult<PersonalInfoFormValues> {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<PersonalInfoFormValues>({
-    resolver: zodResolver(personalInfoSchema),
+  } = useForm<AddressWorkFormValues>({
+    resolver: zodResolver(addressWorkSchema),
     defaultValues: {
-      phone: formData.phone,
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      gender: formData.gender ?? undefined,
+      placeOfWork: formData.placeOfWork,
+      address: formData.address,
     },
     mode: 'onTouched',
     reValidateMode: 'onChange',
   })
 
-  const onSubmit: SubmitHandler<PersonalInfoFormValues> = values => {
+  const onSubmit: SubmitHandler<AddressWorkFormValues> = values => {
     updateFormData(values)
-    navigate(APP_ROUTES.addressWork)
+    navigate(APP_ROUTES.loanParameters)
+  }
+
+  const onBackClick = () => {
+    navigate(APP_ROUTES.personalInfo)
   }
 
   return {
@@ -42,5 +44,6 @@ export function usePersonalInfoForm(): StepFormResult<PersonalInfoFormValues> {
     handleSubmit,
     errors,
     onSubmit,
+    onBackClick,
   }
 }
