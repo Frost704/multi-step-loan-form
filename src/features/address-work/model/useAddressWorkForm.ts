@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-import { useApplicationFormStore } from '@/entities/application/model/application.store'
+import { useApplicationFormStore } from '@/entities/application'
 import { APP_ROUTES } from '@/shared/constants/routes'
 import type { StepFormWithBackResult } from '@/shared/types/form'
 
@@ -18,6 +18,7 @@ export function useAddressWorkForm(): StepFormWithBackResult<AddressWorkFormValu
     control,
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<AddressWorkFormValues>({
     resolver: zodResolver(addressWorkSchema),
@@ -35,6 +36,7 @@ export function useAddressWorkForm(): StepFormWithBackResult<AddressWorkFormValu
   }
 
   const onBackClick = () => {
+    updateFormData(getValues())
     navigate(APP_ROUTES.personalInfo)
   }
 

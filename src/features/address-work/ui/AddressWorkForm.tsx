@@ -1,4 +1,3 @@
-import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import Skeleton from '@mui/material/Skeleton'
 import Stack from '@mui/material/Stack'
@@ -11,13 +10,20 @@ import { SelectField } from '@/shared/ui/SelectField'
 import { ADDRESS_TEXT_FIELD_MAX_LENGTH } from '../model/address-work.constants'
 import { useAddressWorkForm } from '../model/useAddressWorkForm'
 import { usePlaceOfWorkOptions } from '../model/usePlaceOfWorkOptions'
+import { EmptySelectPreview, RetryButton, StatusRow } from './AddressWorkForm.styles'
 import { FormStepLayout } from '@/shared/ui/FormStepLayout'
 import { FormStepActions } from '@/shared/ui/FormStepActions'
 
 export function AddressWorkForm() {
   const { control, register, handleSubmit, errors, onSubmit, onBackClick } = useAddressWorkForm()
 
-  const { data: placeOfWorkOptions = [], isLoading, isError } = usePlaceOfWorkOptions()
+  const {
+    data: placeOfWorkOptions = [],
+    isLoading,
+    isError,
+    isFetching,
+    refetch,
+  } = usePlaceOfWorkOptions()
 
   return (
     <FormStepLayout
@@ -35,30 +41,30 @@ export function AddressWorkForm() {
       {isLoading ? (
         <Stack spacing={1}>
           <Skeleton variant="rounded" animation="wave" height={56} />
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <StatusRow>
             <CircularProgress size={16} />
             <Typography variant="body2" color="text.secondary">
               Loading place of work options...
             </Typography>
-          </Box>
+          </StatusRow>
         </Stack>
       ) : isError ? (
         <Stack spacing={1}>
-          <Box
-            sx={{
-              height: 56,
-              border: '1px solid',
-              borderColor: 'divider',
-              borderRadius: 1,
-              bgcolor: 'action.disabledBackground',
-            }}
-          />
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <EmptySelectPreview />
+          <StatusRow>
             <ErrorIcon color="error" />
             <Typography variant="body2" color="error">
               Failed to load place of work options
             </Typography>
-          </Box>
+            <RetryButton
+              size="small"
+              variant="outlined"
+              onClick={() => refetch()}
+              disabled={isFetching}
+            >
+              Retry
+            </RetryButton>
+          </StatusRow>
         </Stack>
       ) : (
         <SelectField
@@ -74,7 +80,9 @@ export function AddressWorkForm() {
         label="Address"
         autoComplete="street-address"
         error={Boolean(errors.address)}
-        helperText={errors.address?.message ?? 'Maximum 100 characters'}
+        helperText={
+          errors.address?.message ?? `Maximum ${ADDRESS_TEXT_FIELD_MAX_LENGTH} characters`
+        }
         fullWidth
         required
         slotProps={{

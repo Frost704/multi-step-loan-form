@@ -1,4 +1,5 @@
 import { APP_ROUTES } from '@/shared/constants/routes'
+import { RouteFallback } from '@/shared/ui/RouteFallback'
 import { Layout } from '@/shared/ui/layout'
 import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
@@ -10,13 +11,7 @@ const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
 
 export function AppRouter() {
   return (
-    <Suspense
-      fallback={
-        <div className="mx-auto flex text-center max-w-lg">
-          <div>Loading...</div>
-        </div>
-      }
-    >
+    <Suspense fallback={<RouteFallback />}>
       <Routes>
         <Route path={APP_ROUTES.root} element={<Layout />}>
           <Route index element={<Navigate to={APP_ROUTES.personalInfo} replace />} />
