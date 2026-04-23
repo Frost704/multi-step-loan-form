@@ -1,13 +1,12 @@
+import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-
-import { RouteFallbackRoot } from './RouteFallback.styles'
 
 export function RouteFallback() {
   return (
-    <RouteFallbackRoot>
+    <Box sx={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
       <Typography variant="body2" color="text.secondary">
         Loading...
       </Typography>
-    </RouteFallbackRoot>
+    </Box>
   )
 }

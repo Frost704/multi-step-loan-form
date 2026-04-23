@@ -1,30 +1,27 @@
-import { Button, Typography } from '@mui/material'
-
+import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
 import { useNavigate } from 'react-router-dom'
+
 import { APP_ROUTES } from '@/shared/constants/routes'
-import { NotFoundRoot } from './NotFoundPage.styles'
 
 export default function NotFoundPage() {
   const navigate = useNavigate()
 
-  const handleGoToApplicationClick = () => {
-    navigate(APP_ROUTES.personalInfo)
-  }
-
   return (
-    <NotFoundRoot>
+    <Box sx={{ textAlign: 'center', paddingBlock: 'var(--space-14)' }}>
       <Typography variant="h3" component="h1" gutterBottom>
         404
       </Typography>
       <Typography variant="h5" component="h2" gutterBottom>
         Page not found
       </Typography>
-      <Typography className="not-found__description" variant="body1" color="text.secondary">
+      <Typography variant="body1" color="text.secondary" sx={{ mb: 'var(--space-8)' }}>
         The page you are looking for does not exist.
       </Typography>
-      <Button variant="contained" onClick={handleGoToApplicationClick}>
+      <Button variant="contained" onClick={() => navigate(APP_ROUTES.personalInfo)}>
         Go to application
       </Button>
-    </NotFoundRoot>
+    </Box>
   )
 }

@@ -46,7 +46,7 @@ export function PhoneField<T extends FieldValues>({
           onBlur={field.onBlur}
           onValueChange={({ value }) => field.onChange(value)}
           error={fieldState.invalid}
-          helperText={fieldState.error?.message ?? ' '}
+          helperText={fieldState.error?.message ?? 'Phone number format: 0XXX XXX XXX'}
         />
       )}
     />

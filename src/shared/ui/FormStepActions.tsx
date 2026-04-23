@@ -1,7 +1,6 @@
+import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import type { ReactNode } from 'react'
-
-import { FormStepActionsRoot } from './FormStepActions.styles'
 
 type FormStepActionsProps = {
   submitLabel: ReactNode
@@ -19,7 +18,13 @@ export function FormStepActions({
   isBackDisabled = false,
 }: FormStepActionsProps) {
   return (
-    <FormStepActionsRoot hasBackAction={Boolean(onBackClick)}>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: onBackClick ? 'space-between' : 'flex-end',
+        gap: 'var(--space-4)',
+      }}
+    >
       {onBackClick ? (
         <Button type="button" variant="outlined" onClick={onBackClick} disabled={isBackDisabled}>
           {backLabel}
@@ -29,6 +34,6 @@ export function FormStepActions({
       <Button type="submit" variant="contained" disabled={isSubmitDisabled}>
         {submitLabel}
       </Button>
-    </FormStepActionsRoot>
+    </Box>
   )
 }

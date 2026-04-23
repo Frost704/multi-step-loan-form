@@ -1,3 +1,4 @@
+import { Fade } from '@mui/material'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
@@ -19,21 +20,26 @@ export function FormStepLayout({
   onSubmit,
 }: FormStepLayoutProps) {
   return (
-    <Box component="form" noValidate onSubmit={onSubmit}>
-      <Stack spacing={3}>
-        <Box>
-          <Typography variant="h4" component="h1" gutterBottom>
+    <Fade in timeout={300} mountOnEnter unmountOnExit>
+      <Box
+        component="form"
+        noValidate
+        onSubmit={onSubmit}
+        sx={{ display: 'grid', gap: 'var(--space-4)' }}
+      >
+        <Box component="div">
+          <Typography variant="h4" component="h1">
             {title}
           </Typography>
-          <Typography variant="body1" color="text.secondary">
+          <Typography variant="body1" component="h2" color="text.secondary">
             {description}
           </Typography>
         </Box>
-
-        {children}
-
-        {actions}
-      </Stack>
-    </Box>
+        <Stack spacing={2}>
+          {children}
+          {actions}
+        </Stack>
+      </Box>
+    </Fade>
   )
 }

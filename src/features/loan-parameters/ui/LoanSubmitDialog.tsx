@@ -3,29 +3,22 @@ import ErrorRoundedIcon from '@mui/icons-material/ErrorRounded'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 
+import { useApplicationFormStore } from '@/entities/application'
 import { AppDialog } from '@/shared/ui/AppDialog'
 
 type LoanSubmitDialogProps = {
   status: 'success' | 'error' | null
   error: string | null
-  firstName: string
-  lastName: string
-  amount: number
-  periodDays: number
   onSuccess: () => void
   onClose: () => void
 }
 
-export function LoanSubmitDialog({
-  status,
-  error,
-  firstName,
-  lastName,
-  amount,
-  periodDays,
-  onSuccess,
-  onClose,
-}: LoanSubmitDialogProps) {
+export function LoanSubmitDialog({ status, error, onSuccess, onClose }: LoanSubmitDialogProps) {
+  const firstName = useApplicationFormStore(s => s.formData.firstName)
+  const lastName = useApplicationFormStore(s => s.formData.lastName)
+  const amount = useApplicationFormStore(s => s.formData.amount)
+  const periodDays = useApplicationFormStore(s => s.formData.periodDays)
+
   const isSuccess = status === 'success'
   const handleAction = isSuccess ? onSuccess : onClose
 
