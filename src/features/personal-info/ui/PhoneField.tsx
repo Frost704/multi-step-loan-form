@@ -11,7 +11,6 @@ type PhoneFieldProps<T extends FieldValues> = {
   required?: boolean
   disabled?: boolean
   fullWidth?: boolean
-  maxLength?: number
 }
 
 export function PhoneField<T extends FieldValues>({
@@ -23,7 +22,6 @@ export function PhoneField<T extends FieldValues>({
   required = false,
   disabled = false,
   fullWidth = true,
-  maxLength,
 }: PhoneFieldProps<T>) {
   return (
     <Controller
@@ -49,7 +47,6 @@ export function PhoneField<T extends FieldValues>({
           onValueChange={({ value }) => field.onChange(value)}
           error={fieldState.invalid}
           helperText={fieldState.error?.message ?? ' '}
-          slotProps={{ htmlInput: { maxLength } }}
         />
       )}
     />
