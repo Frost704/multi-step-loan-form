@@ -12,10 +12,8 @@ export function AppRouter() {
   return (
     <Suspense
       fallback={
-        <div className="container py-5">
-          <div className="mx-auto flex text-center max-w-lg">
-            <div>Loading...</div>
-          </div>
+        <div className="mx-auto flex text-center max-w-lg">
+          <div>Loading...</div>
         </div>
       }
     >

@@ -61,6 +61,14 @@ export default defineConfig(
       '@typescript-eslint/prefer-optional-chain': 'warn',
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
       'no-console': ['warn', { allow: ['warn', 'error'] }],
+      '@typescript-eslint/no-misused-promises': [
+        'error',
+        {
+          checksVoidReturn: {
+            attributes: false,
+          },
+        },
+      ],
       'prefer-const': 'error',
       'no-var': 'error',
     },
