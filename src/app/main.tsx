@@ -4,6 +4,10 @@ import { BrowserRouter } from 'react-router-dom'
 import { AppRouter } from '@/app/router'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from '@/app/query-client'
+import { ThemeProvider } from '@mui/material'
+import { appTheme } from '@/app/theme'
+import CssBaseline from '@mui/material/CssBaseline'
+import '../index.css'
 
 const rootElement = document.getElementById('root')
 
@@ -13,10 +17,13 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <AppRouter />
-      </BrowserRouter>
-    </QueryClientProvider>
+    <ThemeProvider theme={appTheme}>
+      <CssBaseline />
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AppRouter />
+        </BrowserRouter>
+      </QueryClientProvider>
+    </ThemeProvider>
   </StrictMode>,
 )
