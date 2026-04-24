@@ -23,6 +23,10 @@ const amountSx = {
   backgroundClip: 'text',
 }
 
+const termSx = {
+  ...amountSx,
+}
+
 const approvedSx = {
   color: 'success.main',
   fontWeight: 700,
@@ -60,14 +64,18 @@ export function LoanSubmitDialog({ status, error, onSuccess, onClose }: LoanSubm
             >
               {firstName} {lastName}
             </Box>
-            {t.successLoanInfo(amount, periodDays)}{' '}
+            {t.successLoanInfo}{' '}
             <Box component="span" sx={amountSx}>
               ${amount}
             </Box>{' '}
+            {t.successLoanTermConnector}{' '}
+            <Box component="span" sx={termSx}>
+              {periodDays} {en.loanParameters.days}
+            </Box>{' '}
+            {t.successLoanHasBeen}{' '}
             <Box component="span" sx={approvedSx}>
               {t.approved}
             </Box>
-            .
           </>
         ) : (
           (error ?? t.defaultError)

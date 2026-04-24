@@ -91,8 +91,9 @@ export const en = {
     dialog: {
       successTitle: 'Congratulations!',
       errorTitle: 'Submission failed',
-      successLoanInfo: (amount: number, days: number) =>
-        `Your loan of $${amount} for ${days} days has been`,
+      successLoanInfo: 'Your loan of',
+      successLoanTermConnector: 'for',
+      successLoanHasBeen: 'has been',
       approved: 'approved',
       defaultError: 'Please try again later',
       successAction: 'Great!',

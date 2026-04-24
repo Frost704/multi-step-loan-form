@@ -41,9 +41,14 @@ export function useAddressWorkForm(): UseAddressWorkFormResult {
     formState: { errors },
   } = useForm<AddressWorkFormValues>({
     resolver: zodResolver(addressWorkSchema),
-    defaultValues: {
-      placeOfWork: formData.placeOfWork,
+    values: {
+      placeOfWork: (placeOfWorkOptions ?? []).some(o => o.value === formData.placeOfWork)
+        ? formData.placeOfWork
+        : '',
       address: formData.address,
+    },
+    resetOptions: {
+      keepDirtyValues: true,
     },
     mode: 'onTouched',
     reValidateMode: 'onChange',

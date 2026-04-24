@@ -11,7 +11,7 @@ type SubmitLoanApplicationPayload = {
   lastName: string
 }
 
-const SUBMIT_LOAN_APPLICATION_URL = 'https://dummyjson.com/products/adda'
+const SUBMIT_LOAN_APPLICATION_URL = 'https://dummyjson.com/products/add'
 
 export async function submitLoanApplication(payload: SubmitLoanApplicationPayload): Promise<void> {
   const response = await fetch(SUBMIT_LOAN_APPLICATION_URL, {
