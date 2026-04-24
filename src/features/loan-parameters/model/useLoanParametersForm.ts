@@ -2,8 +2,10 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useApplicationFormStore } from '@/entities/application'
+import { submitErrors } from '@/shared/i18n/en'
 import { APP_ROUTES } from '@/shared/constants/routes'
 
+import { HttpError } from '../api/submitLoanApplication'
 import { useSubmitLoanApplication } from './useSubmitLoanApplication'
 
 type SubmitDialogStatus = 'success' | 'error'
@@ -47,11 +49,20 @@ export function useLoanParametersForm() {
     resetSubmitState()
   }
 
+  const submitError =
+    error instanceof HttpError
+      ? error.status >= 500
+        ? submitErrors.serverError
+        : submitErrors.generic
+      : error != null
+        ? submitErrors.generic
+        : null
+
   return {
     onSubmit,
     onBackClick,
     isSubmitting,
-    submitError: error instanceof Error ? error.message : null,
+    submitError,
     submitDialogStatus,
     closeSubmitDialog,
     resetApplication,

@@ -1,6 +1,6 @@
 import { APP_ROUTES } from '@/shared/constants/routes'
 import { RouteFallback } from '@/shared/ui/RouteFallback'
-import { Layout } from '@/shared/ui/layout'
+
 import { lazy, Suspense, type ReactNode } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
@@ -9,7 +9,8 @@ import {
   isPersonalInfoComplete,
   useApplicationFormStore,
 } from '@/entities/application'
-import type { LoanApplicationDraft } from '@/entities/application/model/types'
+import type { LoanApplicationDraft } from '@/entities/application'
+import { Layout } from '@/widgets/loan-application-layout/ui/Layout'
 
 const PersonalInfoPage = lazy(() => import('@/pages/PersonalInfoPage'))
 const AddressWorkPage = lazy(() => import('@/pages/AddressWorkPage'))

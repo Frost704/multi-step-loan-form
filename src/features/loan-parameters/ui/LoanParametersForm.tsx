@@ -1,5 +1,6 @@
 import Stack from '@mui/material/Stack'
 
+import { en } from '@/shared/i18n/en'
 import { FormStepActions } from '@/shared/ui/FormStepActions'
 import { FormStepLayout } from '@/shared/ui/FormStepLayout'
 
@@ -8,6 +9,8 @@ import { LoanAmountSection } from './LoanAmountSection'
 import { LoanApplicationSummary } from './LoanApplicationSummary'
 import { LoanPeriodDaysSection } from './LoanPeriodDaysSection'
 import { LoanSubmitDialog } from './LoanSubmitDialog'
+
+const t = en.loanParameters
 
 export function LoanParametersForm() {
   const {
@@ -23,19 +26,19 @@ export function LoanParametersForm() {
   return (
     <>
       <FormStepLayout
-        title="Loan parameters"
-        description="Choose the loan amount and term."
+        title={t.title}
+        description={t.description}
         onSubmit={onSubmit}
         actions={
           <FormStepActions
-            submitLabel={isSubmitting ? 'Submitting...' : 'Submit application'}
+            submitLabel={isSubmitting ? t.submitting : t.submit}
             onBackClick={onBackClick}
             isBackDisabled={isSubmitting}
             isSubmitDisabled={isSubmitting}
           />
         }
       >
-        <Stack spacing={1}>
+        <Stack spacing={3}>
           <LoanAmountSection />
           <LoanPeriodDaysSection />
           <LoanApplicationSummary />

@@ -1,56 +1,59 @@
-import Skeleton from '@mui/material/Skeleton'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import ErrorIcon from '@mui/icons-material/Error'
 
-import { SelectField } from '@/shared/ui/SelectField'
+import { en } from '@/shared/i18n/en'
+import { FormStepActions } from '@/shared/ui/FormStepActions'
+import { FormStepLayout } from '@/shared/ui/FormStepLayout'
+import { ControlledSelectField } from '@/shared/form/ControlledSelectField'
 
 import { ADDRESS_TEXT_FIELD_MAX_LENGTH } from '../model/address-work.constants'
 import { useAddressWorkForm } from '../model/useAddressWorkForm'
-import { usePlaceOfWorkOptions } from '../model/usePlaceOfWorkOptions'
-import { FormStepLayout } from '@/shared/ui/FormStepLayout'
-import { FormStepActions } from '@/shared/ui/FormStepActions'
-import { Box, Button } from '@mui/material'
+
+const t = en.addressWork
 
 export function AddressWorkForm() {
-  const { control, register, handleSubmit, errors, onSubmit, onBackClick } = useAddressWorkForm()
-
-  const { data: placeOfWorkOptions = [], isLoading, isError, refetch } = usePlaceOfWorkOptions()
+  const {
+    control,
+    register,
+    handleSubmit,
+    errors,
+    onSubmit,
+    onBackClick,
+    placeOfWorkOptions = [],
+    isOptionsLoading,
+    isOptionsError,
+    refetchOptions,
+  } = useAddressWorkForm()
 
   return (
     <FormStepLayout
-      title="Address and place of work"
-      description="Enter your address and select your place of work."
+      title={t.title}
+      description={t.description}
       onSubmit={handleSubmit(onSubmit)}
       actions={
         <FormStepActions
-          submitLabel="Next"
+          submitLabel={en.common.next}
           onBackClick={onBackClick}
-          isSubmitDisabled={isLoading || isError}
+          isSubmitDisabled={isOptionsLoading || isOptionsError}
         />
       }
     >
       <TextField
-        label="Address"
+        label={t.address}
         autoComplete="street-address"
         error={Boolean(errors.address)}
-        helperText={
-          errors.address?.message ?? `Maximum ${ADDRESS_TEXT_FIELD_MAX_LENGTH} characters`
-        }
+        helperText={errors.address?.message ?? t.maxChars(ADDRESS_TEXT_FIELD_MAX_LENGTH)}
         fullWidth
         required
-        slotProps={{
-          htmlInput: {
-            maxLength: ADDRESS_TEXT_FIELD_MAX_LENGTH,
-          },
-        }}
+        slotProps={{ htmlInput: { maxLength: ADDRESS_TEXT_FIELD_MAX_LENGTH } }}
         {...register('address')}
       />
-      {isLoading ? (
-        <Skeleton variant="rounded" sx={{ bgcolor: 'grey.400' }} height={78}></Skeleton>
-      ) : isError ? (
+
+      {isOptionsError ? (
         <Box
-          component="div"
           sx={{
             display: 'flex',
             gap: 'var(--space-2)',
@@ -61,17 +64,19 @@ export function AddressWorkForm() {
         >
           <ErrorIcon color="error" />
           <Typography variant="body1" color="error">
-            Failed to load
+            {t.failedToLoad}
           </Typography>
-          <Button size="small" variant="contained" onClick={() => refetch()}>
-            Retry
+          <Button size="small" variant="contained" onClick={refetchOptions}>
+            {t.retry}
           </Button>
         </Box>
       ) : (
-        <SelectField
+        <ControlledSelectField
           control={control}
           name="placeOfWork"
-          label="Place of work"
+          disabled={isOptionsLoading}
+          helperText={isOptionsLoading ? t.loadingOptions : ' '}
+          label={t.placeOfWork}
           options={placeOfWorkOptions}
           required
         />

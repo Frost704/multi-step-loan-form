@@ -1,9 +1,17 @@
+export class HttpError extends Error {
+  readonly status: number
+  constructor(status: number) {
+    super(`HTTP ${status}`)
+    this.status = status
+  }
+}
+
 type SubmitLoanApplicationPayload = {
   firstName: string
   lastName: string
 }
 
-const SUBMIT_LOAN_APPLICATION_URL = 'https://dummyjson.com/products/add'
+const SUBMIT_LOAN_APPLICATION_URL = 'https://dummyjson.com/products/adda'
 
 export async function submitLoanApplication(payload: SubmitLoanApplicationPayload): Promise<void> {
   const response = await fetch(SUBMIT_LOAN_APPLICATION_URL, {
@@ -17,7 +25,7 @@ export async function submitLoanApplication(payload: SubmitLoanApplicationPayloa
   })
 
   if (!response.ok) {
-    throw new Error(`Server error: ${response.status}`)
+    throw new HttpError(response.status)
   }
 
   await response.json()

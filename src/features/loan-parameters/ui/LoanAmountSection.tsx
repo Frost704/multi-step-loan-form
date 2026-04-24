@@ -1,4 +1,5 @@
 import { useApplicationFormStore } from '@/entities/application'
+import { en } from '@/shared/i18n/en'
 
 import {
   LOAN_AMOUNT_MARKS,
@@ -15,9 +16,9 @@ export function LoanAmountSection() {
 
   return (
     <LoanParameterSection
-      title="Loan amount"
+      title={en.loanParameters.loanAmount}
       value={amount}
-      onChange={v => updateFormData({ amount: v })}
+      onChange={value => updateFormData({ amount: value })}
       min={LOAN_AMOUNT_MIN}
       max={LOAN_AMOUNT_MAX}
       step={LOAN_AMOUNT_STEP}

@@ -5,7 +5,6 @@ export const PresetButton = styled('button')({
   padding: '3px 10px',
   height: 26,
   borderRadius: 'var(--radius-sm)',
-  fontFamily: 'inherit',
   fontSize: 'var(--font-size-sm)',
   fontWeight: 600,
   lineHeight: 1,
@@ -43,12 +42,15 @@ export const LoanParameterHeader = styled('div')({
   display: 'flex',
   alignItems: 'baseline',
   justifyContent: 'space-between',
-  marginBottom: 2,
+  marginBottom: 24,
 })
 
 export const LoanParameterLabel = styled(Typography)({
+  display: 'flex',
+  flexDirection: 'column',
   fontWeight: 600,
   letterSpacing: '0.08em',
+  alignItems: 'flex-start',
 })
 
 export const LoanParameterValue = styled(Typography)({
@@ -61,6 +63,7 @@ export const LoanParameterValue = styled(Typography)({
   WebkitBackgroundClip: 'text',
   WebkitTextFillColor: 'transparent',
   backgroundClip: 'text',
+  fontVariantNumeric: 'tabular-nums',
 })
 
 export const LoanParameterUnit = styled('span')({

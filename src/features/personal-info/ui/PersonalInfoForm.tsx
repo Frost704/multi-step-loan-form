@@ -1,67 +1,64 @@
 import TextField from '@mui/material/TextField'
 
-import { PhoneField } from './PhoneField'
-import { SelectField } from '@/shared/ui/SelectField'
 import {
-  GENDER_OPTIONS,
   NAME_TEXT_FIELD_MAX_LENGTH,
+  GENDER_OPTIONS,
 } from '@/features/personal-info/model/personal-info.constants'
 import { usePersonalInfoForm } from '@/features/personal-info/model/usePersonalInfoForm'
-import { FormStepLayout } from '@/shared/ui/FormStepLayout'
+import { en } from '@/shared/i18n/en'
 import { FormStepActions } from '@/shared/ui/FormStepActions'
+import { FormStepLayout } from '@/shared/ui/FormStepLayout'
+import { ControlledSelectField } from '@/shared/form/ControlledSelectField'
+
+import { PhoneField } from './PhoneField'
+
+const t = en.personalInfo
 
 export function PersonalInfoForm() {
   const { control, register, handleSubmit, errors, onSubmit } = usePersonalInfoForm()
+
   return (
     <FormStepLayout
-      title="Personal information"
-      description="Enter your personal details to continue the application."
+      title={t.title}
+      description={t.description}
       onSubmit={handleSubmit(onSubmit)}
-      actions={<FormStepActions submitLabel="Next" />}
+      actions={<FormStepActions submitLabel={en.common.next} />}
     >
       <TextField
-        label="First name"
+        label={t.firstName}
         autoComplete="given-name"
         error={Boolean(errors.firstName)}
-        helperText={errors.firstName?.message ?? `Maximum ${NAME_TEXT_FIELD_MAX_LENGTH} characters`}
+        helperText={errors.firstName?.message ?? t.maxChars(NAME_TEXT_FIELD_MAX_LENGTH)}
         fullWidth
         required
-        slotProps={{
-          htmlInput: {
-            maxLength: NAME_TEXT_FIELD_MAX_LENGTH,
-          },
-        }}
+        slotProps={{ htmlInput: { maxLength: NAME_TEXT_FIELD_MAX_LENGTH } }}
         {...register('firstName')}
       />
 
       <TextField
-        label="Last name"
+        label={t.lastName}
         autoComplete="family-name"
         error={Boolean(errors.lastName)}
-        helperText={errors.lastName?.message ?? `Maximum ${NAME_TEXT_FIELD_MAX_LENGTH} characters`}
+        helperText={errors.lastName?.message ?? t.maxChars(NAME_TEXT_FIELD_MAX_LENGTH)}
         fullWidth
         required
-        slotProps={{
-          htmlInput: {
-            maxLength: NAME_TEXT_FIELD_MAX_LENGTH,
-          },
-        }}
+        slotProps={{ htmlInput: { maxLength: NAME_TEXT_FIELD_MAX_LENGTH } }}
         {...register('lastName')}
       />
 
       <PhoneField
         control={control}
         name="phone"
-        label="Phone"
+        label={t.phone}
         required
         format="#### ### ###"
         placeholder="0XXX XXX XXX"
       />
 
-      <SelectField
+      <ControlledSelectField
         control={control}
         name="gender"
-        label="Gender"
+        label={t.gender}
         options={GENDER_OPTIONS}
         autoComplete="sex"
         required

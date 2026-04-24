@@ -1,9 +1,10 @@
 import CelebrationIcon from '@mui/icons-material/Celebration'
 import ErrorRoundedIcon from '@mui/icons-material/ErrorRounded'
+import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Typography from '@mui/material/Typography'
 
 import { useApplicationFormStore } from '@/entities/application'
+import { en } from '@/shared/i18n/en'
 import { AppDialog } from '@/shared/ui/AppDialog'
 
 type LoanSubmitDialogProps = {
@@ -12,6 +13,22 @@ type LoanSubmitDialogProps = {
   onSuccess: () => void
   onClose: () => void
 }
+
+const amountSx = {
+  fontWeight: 800,
+  letterSpacing: '-0.03em',
+  background: 'var(--gradient-primary)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text',
+}
+
+const approvedSx = {
+  color: 'success.main',
+  fontWeight: 700,
+}
+
+const t = en.loanParameters.dialog
 
 export function LoanSubmitDialog({ status, error, onSuccess, onClose }: LoanSubmitDialogProps) {
   const firstName = useApplicationFormStore(s => s.formData.firstName)
@@ -25,26 +42,44 @@ export function LoanSubmitDialog({ status, error, onSuccess, onClose }: LoanSubm
   return (
     <AppDialog
       open={status !== null}
-      title={isSuccess ? 'Congratulations!' : 'Submission failed'}
+      title={isSuccess ? t.successTitle : t.errorTitle}
       onClose={handleAction}
       description={
-        isSuccess
-          ? `${lastName} ${firstName}, your loan has been approved`
-          : (error ?? 'Please try again later')
+        isSuccess ? (
+          <>
+            <Box
+              component="span"
+              sx={{
+                display: 'block',
+                color: 'text.primary',
+                fontWeight: 700,
+                overflowWrap: 'break-word',
+                wordBreak: 'break-word',
+                mb: 0.5,
+              }}
+            >
+              {firstName} {lastName}
+            </Box>
+            {t.successLoanInfo(amount, periodDays)}{' '}
+            <Box component="span" sx={amountSx}>
+              ${amount}
+            </Box>{' '}
+            <Box component="span" sx={approvedSx}>
+              {t.approved}
+            </Box>
+            .
+          </>
+        ) : (
+          (error ?? t.defaultError)
+        )
       }
       icon={isSuccess ? <CelebrationIcon /> : <ErrorRoundedIcon />}
       iconColor={isSuccess ? 'primary' : 'error'}
       actions={
         <Button variant="contained" size="large" onClick={handleAction} fullWidth>
-          {isSuccess ? 'Great!' : 'Try again'}
+          {isSuccess ? t.successAction : t.errorAction}
         </Button>
       }
-    >
-      {isSuccess ? (
-        <Typography variant="h3" gutterBottom>
-          ${amount} for {periodDays} days
-        </Typography>
-      ) : null}
-    </AppDialog>
+    />
   )
 }

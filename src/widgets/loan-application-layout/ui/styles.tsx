@@ -4,14 +4,16 @@ export const LayoutGrid = styled('div')({
   display: 'grid',
   minHeight: '100vh',
   gridTemplateColumns: '1fr',
+
   '@media (min-width: 1200px)': {
-    gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.15fr)',
-    alignItems: 'start',
+    gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)',
+    alignItems: 'stretch',
   },
 })
 
 export const PromoRail = styled('aside')({
   display: 'none',
+
   '@media (min-width: 1200px)': {
     display: 'flex',
     flexDirection: 'column',
@@ -20,11 +22,12 @@ export const PromoRail = styled('aside')({
     top: 0,
     height: '100vh',
     overflow: 'hidden',
-    padding: '2rem 2.5rem',
+    padding: 'var(--space-8) var(--space-10)',
     background: 'var(--gradient-primary)',
   },
+
   '@media (min-width: 1536px)': {
-    padding: '2.5rem 3.5rem',
+    padding: 'var(--space-10) var(--space-14)',
   },
 })
 
@@ -38,9 +41,10 @@ type PromoBlobProps = {
   right?: string
 }
 
+const promoBlobHiddenProps = ['size', 'opacity', 'color', 'top', 'left', 'bottom', 'right']
+
 export const PromoBlob = styled('div', {
-  shouldForwardProp: p =>
-    !['size', 'opacity', 'color', 'top', 'left', 'bottom', 'right'].includes(p as string),
+  shouldForwardProp: prop => !promoBlobHiddenProps.includes(String(prop)),
 })<PromoBlobProps>(({ size, opacity, color, top, left, bottom, right }) => ({
   position: 'absolute',
   top,
@@ -51,7 +55,7 @@ export const PromoBlob = styled('div', {
   height: size,
   borderRadius: '50%',
   opacity,
-  filter: 'blur(3rem)',
+  filter: 'blur(var(--space-14))',
   background: color,
   pointerEvents: 'none',
 }))
@@ -61,7 +65,7 @@ export const PromoDotPattern = styled('div')({
   inset: 0,
   opacity: 0.07,
   backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
-  backgroundSize: '24px 24px',
+  backgroundSize: 'var(--space-6) var(--space-6)',
   pointerEvents: 'none',
 })
 
@@ -72,23 +76,23 @@ export const BrandIconBox = styled('div')({
   justifyContent: 'center',
   width: 48,
   height: 48,
-  borderRadius: '1rem',
-  backdropFilter: 'blur(8px)',
-  background: 'rgba(255,255,255,0.15)',
-  border: '1px solid rgba(255,255,255,0.25)',
+  borderRadius: 'var(--radius-md)',
+  backdropFilter: 'blur(var(--space-2))',
+  background: 'hsl(var(--primary-foreground) / 0.15)',
+  border: '1px solid hsl(var(--primary-foreground) / 0.25)',
 })
 
 export const PromoPoints = styled('div')({
   position: 'relative',
   display: 'flex',
   flexDirection: 'column',
-  gap: '1rem',
+  gap: 'var(--space-4)',
 })
 
 export const PromoPointRow = styled('div')({
   display: 'flex',
   alignItems: 'flex-start',
-  gap: '0.875rem',
+  gap: 'var(--space-3)',
 })
 
 export const PromoPointIconBox = styled('div')({
@@ -98,21 +102,23 @@ export const PromoPointIconBox = styled('div')({
   justifyContent: 'center',
   width: 40,
   height: 40,
-  borderRadius: '0.75rem',
-  background: 'rgba(255,255,255,0.12)',
-  border: '1px solid rgba(255,255,255,0.18)',
+  borderRadius: 'var(--radius-sm)',
+  background: 'hsl(var(--primary-foreground) / 0.12)',
+  border: '1px solid hsl(var(--primary-foreground) / 0.18)',
 })
 
 export const FormColumn = styled('main')({
   display: 'flex',
   flexDirection: 'column',
+  minHeight: '100vh',
 })
 
 export const MobileBrandBar = styled('div')({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '1.5rem 1.5rem 0',
+  padding: 'var(--space-6) var(--space-6) 0',
+
   '@media (min-width: 1200px)': {
     display: 'none',
   },
@@ -124,7 +130,7 @@ export const MobileBrandIconBox = styled('div')({
   justifyContent: 'center',
   width: 38,
   height: 38,
-  borderRadius: '0.75rem',
+  borderRadius: 'var(--radius-sm)',
   background: 'var(--gradient-primary)',
 })
 
@@ -143,15 +149,18 @@ export const FormArea = styled('div')({
   width: '100%',
   maxWidth: 576,
   margin: '0 auto',
-  padding: '2rem 1.25rem',
+  padding: 'var(--space-6) var(--space-5)',
+
   '@media (min-width: 600px)': {
-    padding: '2rem',
+    padding: 'var(--space-6)',
   },
+
   '@media (min-width: 1200px)': {
-    justifyContent: 'flex-start',
-    padding: '2rem 2.5rem',
+    justifyContent: 'center',
+    padding: 'var(--space-8) var(--space-10)',
   },
+
   '@media (min-width: 1536px)': {
-    padding: '2.5rem 3.5rem',
+    padding: 'var(--space-10) var(--space-14)',
   },
 })

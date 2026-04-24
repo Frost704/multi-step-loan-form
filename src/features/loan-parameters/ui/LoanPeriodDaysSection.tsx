@@ -1,4 +1,5 @@
 import { useApplicationFormStore } from '@/entities/application'
+import { en } from '@/shared/i18n/en'
 
 import {
   LOAN_TERM_MARKS,
@@ -15,15 +16,15 @@ export function LoanPeriodDaysSection() {
 
   return (
     <LoanParameterSection
-      title="Loan term"
+      title={en.loanParameters.loanTerm}
       value={periodDays}
-      onChange={v => updateFormData({ periodDays: v })}
+      onChange={value => updateFormData({ periodDays: value })}
       min={LOAN_TERM_MIN}
       max={LOAN_TERM_MAX}
       step={LOAN_TERM_STEP}
       marks={LOAN_TERM_MARKS}
       presets={LOAN_TERM_PRESETS}
-      valueUnit="days"
+      valueUnit={en.loanParameters.days}
     />
   )
 }

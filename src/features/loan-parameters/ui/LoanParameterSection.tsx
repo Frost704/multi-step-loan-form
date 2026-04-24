@@ -1,5 +1,4 @@
 import Slider from '@mui/material/Slider'
-import Typography from '@mui/material/Typography'
 
 import {
   LoanParameterCard,
@@ -38,30 +37,24 @@ export function LoanParameterSection({
 }: LoanParameterSectionProps) {
   const formatValue = (v: number) => (valueUnit ? `${v} ${valueUnit}` : `${valuePrefix}${v}`)
 
-  const rangeLabel = valueUnit
-    ? `${min} – ${max} ${valueUnit}`
-    : `${valuePrefix}${min} – ${valuePrefix}${max}`
-
   return (
     <LoanParameterCard>
       <LoanParameterHeader>
         <LoanParameterLabel variant="overline">{title}</LoanParameterLabel>
-        <LoanParameterValue>
+        <LoanParameterValue variant="overline">
           {valuePrefix}
           {value}
           {valueUnit ? <LoanParameterUnit> {valueUnit}</LoanParameterUnit> : null}
         </LoanParameterValue>
       </LoanParameterHeader>
 
-      <Typography variant="caption" color="text.secondary">
-        {rangeLabel}
-      </Typography>
       <Slider
         value={value}
         min={min}
         max={max}
         step={step}
         marks={marks}
+        valueLabelDisplay="auto"
         onChange={(_, nextValue) => {
           if (typeof nextValue === 'number') onChange(nextValue)
         }}

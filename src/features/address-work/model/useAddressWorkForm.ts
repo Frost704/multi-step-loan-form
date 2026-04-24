@@ -7,12 +7,31 @@ import { APP_ROUTES } from '@/shared/constants/routes'
 import type { StepFormWithBackResult } from '@/shared/types/form'
 
 import { addressWorkSchema, type AddressWorkFormValues } from './address-work.schema'
+import { usePlaceOfWorkOptions } from './usePlaceOfWorkOptions'
 
-export function useAddressWorkForm(): StepFormWithBackResult<AddressWorkFormValues> {
+type UseAddressWorkFormResult = StepFormWithBackResult<AddressWorkFormValues> & {
+  placeOfWorkOptions: ReturnType<typeof usePlaceOfWorkOptions>['data']
+  isOptionsLoading: boolean
+  isOptionsError: boolean
+  refetchOptions: () => void
+}
+
+export function useAddressWorkForm(): UseAddressWorkFormResult {
   const navigate = useNavigate()
 
   const formData = useApplicationFormStore(state => state.formData)
   const updateFormData = useApplicationFormStore(state => state.updateFormData)
+
+  const {
+    data: placeOfWorkOptions,
+    isLoading: isOptionsLoading,
+    isError: isOptionsError,
+    refetch,
+  } = usePlaceOfWorkOptions()
+
+  const refetchOptions = () => {
+    void refetch()
+  }
 
   const {
     control,
@@ -36,7 +55,7 @@ export function useAddressWorkForm(): StepFormWithBackResult<AddressWorkFormValu
   }
 
   const onBackClick = () => {
-    updateFormData(getValues())
+    updateFormData({ ...getValues(), placeOfWork: isOptionsError ? '' : getValues().placeOfWork })
     navigate(APP_ROUTES.personalInfo)
   }
 
@@ -47,5 +66,9 @@ export function useAddressWorkForm(): StepFormWithBackResult<AddressWorkFormValu
     errors,
     onSubmit,
     onBackClick,
+    placeOfWorkOptions,
+    isOptionsLoading,
+    isOptionsError,
+    refetchOptions,
   }
 }

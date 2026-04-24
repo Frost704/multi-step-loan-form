@@ -1,9 +1,6 @@
-export type PlaceOfWorkOption = {
-  value: string
-  label: string
-}
+import type { SelectOption } from '@/shared/types/select-option'
 
-export function mapPlaceOfWorkOptions(categories: string[]): PlaceOfWorkOption[] {
+export function mapPlaceOfWorkOptions(categories: string[]): SelectOption[] {
   return categories.map(category => ({
     value: category,
     label: category

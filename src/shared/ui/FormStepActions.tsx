@@ -2,6 +2,8 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import type { ReactNode } from 'react'
 
+import { en } from '@/shared/i18n/en'
+
 type FormStepActionsProps = {
   submitLabel: ReactNode
   backLabel?: ReactNode
@@ -12,7 +14,7 @@ type FormStepActionsProps = {
 
 export function FormStepActions({
   submitLabel,
-  backLabel = 'Back',
+  backLabel = en.common.back,
   onBackClick,
   isSubmitDisabled = false,
   isBackDisabled = false,
