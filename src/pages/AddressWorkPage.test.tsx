@@ -2,11 +2,11 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { AddressWorkForm } from './AddressWorkForm'
+import AddressWorkPage from './AddressWorkPage'
 
 const mockUseAddressWorkForm = vi.fn()
 
-vi.mock('../model/useAddressWorkForm', () => ({
+vi.mock('@/features/address-work/model/useAddressWorkForm', () => ({
   useAddressWorkForm: () =>
     mockUseAddressWorkForm() as {
       control: object
@@ -45,7 +45,7 @@ vi.mock('@/shared/form/ControlledSelectField', () => ({
   ),
 }))
 
-describe('AddressWorkForm', () => {
+describe('AddressWorkPage', () => {
   beforeEach(() => {
     mockUseAddressWorkForm.mockReturnValue({
       control: {},
@@ -77,7 +77,7 @@ describe('AddressWorkForm', () => {
       refetchOptions,
     })
 
-    render(<AddressWorkForm />)
+    render(<AddressWorkPage />)
 
     expect(screen.getByText('Failed to load')).toBeInTheDocument()
     const retryButton = screen.getByRole('button', { name: 'Retry' })
@@ -99,7 +99,7 @@ describe('AddressWorkForm', () => {
       refetchOptions: vi.fn(),
     })
 
-    render(<AddressWorkForm />)
+    render(<AddressWorkPage />)
 
     expect(screen.getByText('loading...')).toBeInTheDocument()
     expect(screen.getByText('disabled')).toBeInTheDocument()

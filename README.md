@@ -28,7 +28,7 @@ npm run dev
 After startup, Vite will print the local URL, usually:
 
 ```text
-http://localhost:5173
+http://localhost:3000
 ```
 
 ## Verifying the Project
