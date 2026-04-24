@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { PersonalInfoForm } from './PersonalInfoForm'
+import PersonalInfoPage from './PersonalInfoPage'
 
 const mockUsePersonalInfoForm = vi.fn()
 
-vi.mock('../model/usePersonalInfoForm', () => ({
+vi.mock('@/features/personal-info/model/usePersonalInfoForm', () => ({
   usePersonalInfoForm: () =>
     mockUsePersonalInfoForm() as {
       control: object
@@ -21,7 +21,7 @@ vi.mock('../model/usePersonalInfoForm', () => ({
     },
 }))
 
-vi.mock('./PhoneField', () => ({
+vi.mock('@/features/personal-info/ui/PhoneField', () => ({
   PhoneField: () => <div>Phone field</div>,
 }))
 
@@ -29,7 +29,7 @@ vi.mock('@/shared/form/ControlledSelectField', () => ({
   ControlledSelectField: () => <div>Gender field</div>,
 }))
 
-describe('PersonalInfoForm', () => {
+describe('PersonalInfoPage', () => {
   beforeEach(() => {
     mockUsePersonalInfoForm.mockReturnValue({
       control: {},
@@ -41,7 +41,7 @@ describe('PersonalInfoForm', () => {
   })
 
   it('renders main step fields', () => {
-    render(<PersonalInfoForm />)
+    render(<PersonalInfoPage />)
 
     expect(screen.getByRole('heading', { name: 'Personal information' })).toBeInTheDocument()
     expect(screen.getByRole('textbox', { name: /first name/i })).toBeInTheDocument()

@@ -62,7 +62,7 @@ export function LoanSubmitDialog({ status, error, onSuccess, onClose }: LoanSubm
                 mb: 0.5,
               }}
             >
-              {firstName} {lastName}
+              {lastName} {firstName}
             </Box>
             {t.successLoanInfo}{' '}
             <Box component="span" sx={amountSx}>

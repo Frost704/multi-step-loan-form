@@ -30,6 +30,7 @@ export function PhoneField<T extends FieldValues>({
       name={name}
       control={control}
       render={({ field, fieldState }) => (
+        // react-number-format enforces the required phone mask while preserving a tel input.
         <PatternFormat
           customInput={TextField}
           format={format}

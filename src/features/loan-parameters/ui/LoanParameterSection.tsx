@@ -49,12 +49,14 @@ export function LoanParameterSection({
       </LoanParameterHeader>
 
       <Slider
+        aria-label={title}
         value={value}
         min={min}
         max={max}
         step={step}
         marks={marks}
         valueLabelDisplay="auto"
+        getAriaValueText={formatValue}
         onChange={(_, nextValue) => {
           if (typeof nextValue === 'number') onChange(nextValue)
         }}
