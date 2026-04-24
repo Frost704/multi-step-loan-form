@@ -31,7 +31,7 @@ describe('LoanSubmitDialog', () => {
     )
 
     expect(screen.getByText('Congratulations!')).toBeInTheDocument()
-    expect(screen.getByText('John Doe')).toBeInTheDocument()
+    expect(screen.getByText('Doe John')).toBeInTheDocument()
     expect(screen.getByText('$500')).toBeInTheDocument()
     expect(screen.getByText('14 days')).toBeInTheDocument()
     expect(screen.getByText('approved')).toBeInTheDocument()
