@@ -1,9 +1,13 @@
-export const LOAN_AMOUNT_MIN = 200
-export const LOAN_AMOUNT_MAX = 1000
-export const LOAN_AMOUNT_STEP = 100
+import {
+  LOAN_AMOUNT_MIN,
+  LOAN_AMOUNT_MAX,
+  LOAN_TERM_MIN,
+  LOAN_TERM_MAX,
+} from '@/entities/application'
 
-export const LOAN_TERM_MIN = 10
-export const LOAN_TERM_MAX = 30
+export { LOAN_AMOUNT_MIN, LOAN_AMOUNT_MAX, LOAN_TERM_MIN, LOAN_TERM_MAX }
+
+export const LOAN_AMOUNT_STEP = 100
 export const LOAN_TERM_STEP = 1
 
 export const LOAN_AMOUNT_MARKS = [
@@ -25,6 +29,7 @@ export const LOAN_AMOUNT_PRESETS = [
   LOAN_AMOUNT_MIN * 4,
   LOAN_AMOUNT_MAX,
 ] as const
+
 export const LOAN_TERM_PRESETS = [
   LOAN_TERM_MIN + 5,
   LOAN_TERM_MIN * 2,

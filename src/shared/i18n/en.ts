@@ -81,6 +81,10 @@ export const en = {
     description: 'Choose the loan amount and term.',
     loanAmount: 'Loan amount',
     loanTerm: 'Loan term',
+    errors: {
+      amountInvalid: 'Select a valid loan amount',
+      termInvalid: 'Select a valid loan term',
+    },
     days: 'days',
     daysAbbr: 'd',
     applicant: 'Applicant',

@@ -1,7 +1,14 @@
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 
-import { useApplicationFormStore } from '@/entities/application'
+import {
+  useApplicationFormStore,
+  LOAN_AMOUNT_MIN,
+  LOAN_AMOUNT_MAX,
+  LOAN_TERM_MIN,
+  LOAN_TERM_MAX,
+} from '@/entities/application'
+import { isInRange } from '@/shared/lib/isInRange'
 import { formatPersonName } from '@/shared/lib/formatPersonName'
 import { en } from '@/shared/i18n/en'
 import { applicantNameSx, applicantSx, labelSx, Card } from './LoanApplicationSummary.styles'
@@ -12,6 +19,12 @@ export function LoanApplicationSummary() {
   const firstName = useApplicationFormStore(s => s.formData.firstName)
   const lastName = useApplicationFormStore(s => s.formData.lastName)
   const { fullName, displayName } = formatPersonName(firstName, lastName)
+
+  const safeAmount = isInRange(amount, LOAN_AMOUNT_MIN, LOAN_AMOUNT_MAX) ? amount : LOAN_AMOUNT_MIN
+  const safePeriodDays =
+    Number.isInteger(periodDays) && isInRange(periodDays, LOAN_TERM_MIN, LOAN_TERM_MAX)
+      ? periodDays
+      : LOAN_TERM_MIN
 
   return (
     <Card>
@@ -41,13 +54,13 @@ export function LoanApplicationSummary() {
               fontVariantNumeric: 'tabular-nums',
             }}
           >
-            ${amount}
+            ${safeAmount}
             {' · '}
             <Box
               component="span"
               sx={{ fontWeight: 500, opacity: 0.8, fontVariantNumeric: 'tabular-nums' }}
             >
-              {periodDays} {en.loanParameters.daysAbbr}
+              {safePeriodDays} {en.loanParameters.daysAbbr}
             </Box>
           </Typography>
         </Box>

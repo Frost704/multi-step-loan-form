@@ -10,21 +10,35 @@ import {
 } from '../model/loan-parameters.constants'
 import { LoanParameterSection } from './LoanParameterSection'
 
-export function LoanAmountSection() {
+type LoanAmountSectionProps = {
+  error?: string
+  onClearError?: () => void
+}
+
+export function LoanAmountSection({ error, onClearError }: LoanAmountSectionProps) {
   const amount = useApplicationFormStore(s => s.formData.amount)
   const updateFormData = useApplicationFormStore(s => s.updateFormData)
+
+  const handleChange = (value: number) => {
+    updateFormData({ amount: value })
+
+    if (error) {
+      onClearError?.()
+    }
+  }
 
   return (
     <LoanParameterSection
       title={en.loanParameters.loanAmount}
       value={amount}
-      onChange={value => updateFormData({ amount: value })}
+      onChange={handleChange}
       min={LOAN_AMOUNT_MIN}
       max={LOAN_AMOUNT_MAX}
       step={LOAN_AMOUNT_STEP}
       marks={LOAN_AMOUNT_MARKS}
       presets={LOAN_AMOUNT_PRESETS}
       valuePrefix="$"
+      error={error}
     />
   )
 }
