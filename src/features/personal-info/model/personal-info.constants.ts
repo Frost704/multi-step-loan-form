@@ -3,5 +3,5 @@ export const GENDER_OPTIONS = [
   { value: 'female', label: 'Female' },
 ] as const
 
-export const NAME_TEXT_FIELD_MAX_LENGTH = 50
+export const NAME_TEXT_FIELD_MAX_LENGTH = 35
 export const PHONE_FIELD_MAX_LENGTH = 10

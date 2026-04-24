@@ -1,6 +1,4 @@
 import Slider from '@mui/material/Slider'
-import Typography from '@mui/material/Typography'
-import { memo } from 'react'
 
 import {
   LoanParameterCard,
@@ -25,7 +23,7 @@ type LoanParameterSectionProps = {
   valueUnit?: string
 }
 
-export const LoanParameterSection = memo(function LoanParameterSection({
+export function LoanParameterSection({
   title,
   value,
   onChange,
@@ -39,24 +37,16 @@ export const LoanParameterSection = memo(function LoanParameterSection({
 }: LoanParameterSectionProps) {
   const formatValue = (v: number) => (valueUnit ? `${v} ${valueUnit}` : `${valuePrefix}${v}`)
 
-  const rangeLabel = valueUnit
-    ? `${min} – ${max} ${valueUnit}`
-    : `${valuePrefix}${min} – ${valuePrefix}${max}`
-
   return (
     <LoanParameterCard>
       <LoanParameterHeader>
         <LoanParameterLabel variant="overline">{title}</LoanParameterLabel>
-        <Typography variant="caption" color="text.secondary">
-          {rangeLabel}
-        </Typography>
+        <LoanParameterValue variant="overline">
+          {valuePrefix}
+          {value}
+          {valueUnit ? <LoanParameterUnit> {valueUnit}</LoanParameterUnit> : null}
+        </LoanParameterValue>
       </LoanParameterHeader>
-
-      <LoanParameterValue>
-        {valuePrefix}
-        {value}
-        {valueUnit ? <LoanParameterUnit> {valueUnit}</LoanParameterUnit> : null}
-      </LoanParameterValue>
 
       <Slider
         value={value}
@@ -65,10 +55,10 @@ export const LoanParameterSection = memo(function LoanParameterSection({
         step={step}
         marks={marks}
         valueLabelDisplay="auto"
-        valueLabelFormat={formatValue}
         onChange={(_, nextValue) => {
           if (typeof nextValue === 'number') onChange(nextValue)
         }}
+        sx={{ mx: 1.5, width: 'calc(100% - 24px)' }}
       />
 
       <LoanPresetList>
@@ -76,7 +66,7 @@ export const LoanParameterSection = memo(function LoanParameterSection({
           <PresetButton
             key={preset}
             type="button"
-            data-active={value === preset ? 'true' : 'false'}
+            data-active={value === preset}
             aria-pressed={value === preset}
             onClick={() => onChange(preset)}
           >
@@ -86,4 +76,4 @@ export const LoanParameterSection = memo(function LoanParameterSection({
       </LoanPresetList>
     </LoanParameterCard>
   )
-})
+}

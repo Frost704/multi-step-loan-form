@@ -17,6 +17,5 @@ export async function getPlaceOfWorkOptions(): Promise<string[]> {
   if (!result.success) {
     throw new Error('Invalid place of work options response')
   }
-
   return result.data
 }

@@ -1,3 +1,11 @@
+export class HttpError extends Error {
+  readonly status: number
+  constructor(status: number) {
+    super(`HTTP ${status}`)
+    this.status = status
+  }
+}
+
 type SubmitLoanApplicationPayload = {
   firstName: string
   lastName: string
@@ -17,7 +25,7 @@ export async function submitLoanApplication(payload: SubmitLoanApplicationPayloa
   })
 
   if (!response.ok) {
-    throw new Error(`Server error: ${response.status}`)
+    throw new HttpError(response.status)
   }
 
   await response.json()

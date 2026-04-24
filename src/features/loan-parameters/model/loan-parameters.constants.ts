@@ -26,7 +26,6 @@ export const LOAN_AMOUNT_PRESETS = [
   LOAN_AMOUNT_MAX,
 ] as const
 export const LOAN_TERM_PRESETS = [
-  LOAN_TERM_MIN,
   LOAN_TERM_MIN + 5,
   LOAN_TERM_MIN * 2,
   LOAN_TERM_MAX - 5,

@@ -2,6 +2,8 @@ import TextField from '@mui/material/TextField'
 import { Controller, type Control, type FieldPath, type FieldValues } from 'react-hook-form'
 import { PatternFormat } from 'react-number-format'
 
+import { en } from '@/shared/i18n/en'
+
 type PhoneFieldProps<T extends FieldValues> = {
   control: Control<T>
   name: FieldPath<T>
@@ -18,7 +20,7 @@ export function PhoneField<T extends FieldValues>({
   name,
   format,
   placeholder,
-  label = 'Phone',
+  label = en.personalInfo.phone,
   required = false,
   disabled = false,
   fullWidth = true,
@@ -46,7 +48,7 @@ export function PhoneField<T extends FieldValues>({
           onBlur={field.onBlur}
           onValueChange={({ value }) => field.onChange(value)}
           error={fieldState.invalid}
-          helperText={fieldState.error?.message ?? ' '}
+          helperText={fieldState.error?.message ?? en.personalInfo.phoneFormat}
         />
       )}
     />

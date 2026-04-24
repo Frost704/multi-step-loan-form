@@ -86,12 +86,6 @@ export const appTheme = createTheme({
       },
     },
 
-    MuiContainer: {
-      defaultProps: {
-        maxWidth: 'sm',
-      },
-    },
-
     MuiPaper: {
       styleOverrides: {
         root: {
@@ -112,10 +106,9 @@ export const appTheme = createTheme({
         root: {
           borderRadius: s('--radius-sm'),
           paddingInline: s('--space-6'),
-          paddingBlock: 13,
+          paddingBlock: 6,
           fontSize: s('--font-size-md'),
           boxShadow: 'none',
-          transition: s('--transition-smooth'),
           '&.Mui-disabled': {
             color: v('--muted-foreground'),
             background: v('--muted'),
@@ -151,24 +144,8 @@ export const appTheme = createTheme({
             color: v('--primary-foreground'),
             boxShadow: 'var(--shadow-soft)',
             '&:hover': {
-              boxShadow: 'var(--shadow-elegant)',
-              transform: 'translateY(-1px)',
-            },
-            '&.Mui-disabled': {
-              background: v('--muted'),
-              color: v('--muted-foreground'),
-            },
-          },
-        },
-        {
-          props: { variant: 'contained', color: 'secondary' },
-          style: {
-            background: 'var(--gradient-accent)',
-            color: v('--accent-foreground'),
-            boxShadow: 'var(--shadow-accent)',
-            '&:hover': {
-              transform: 'translateY(-1px)',
-              filter: 'brightness(1.05)',
+              background: 'var(--gradient-primary)',
+              filter: 'brightness(1.1)',
             },
             '&.Mui-disabled': {
               background: v('--muted'),
@@ -357,15 +334,6 @@ export const appTheme = createTheme({
           boxShadow: 'var(--shadow-elegant)',
           background: 'var(--gradient-card)',
           border: `1px solid ${v('--border')}`,
-        },
-      },
-    },
-
-    MuiAlert: {
-      styleOverrides: {
-        root: {
-          borderRadius: s('--radius-sm'),
-          fontWeight: 500,
         },
       },
     },

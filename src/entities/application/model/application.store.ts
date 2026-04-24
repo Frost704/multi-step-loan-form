@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
 import { APPLICATION_DEFAULTS } from './defaults'
 import type { LoanApplicationDraft } from './types'
 
@@ -8,17 +9,22 @@ type ApplicationFormStore = {
   resetFormData: () => void
 }
 
-export const useApplicationFormStore = create<ApplicationFormStore>(set => ({
-  formData: APPLICATION_DEFAULTS,
-  updateFormData: patch =>
-    set(state => ({
-      formData: {
-        ...state.formData,
-        ...patch,
-      },
-    })),
-  resetFormData: () =>
-    set({
+export const useApplicationFormStore = create<ApplicationFormStore>()(
+  persist(
+    set => ({
       formData: APPLICATION_DEFAULTS,
+      updateFormData: patch =>
+        set(state => ({
+          formData: {
+            ...state.formData,
+            ...patch,
+          },
+        })),
+      resetFormData: () =>
+        set({
+          formData: APPLICATION_DEFAULTS,
+        }),
     }),
-}))
+    { name: 'loan-application-draft', storage: createJSONStorage(() => sessionStorage) },
+  ),
+)

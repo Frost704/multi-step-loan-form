@@ -44,7 +44,12 @@ export function AppDialog({
         </Typography>
 
         {description ? (
-          <Typography variant="body1" color="text.secondary" gutterBottom>
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            gutterBottom
+            sx={{ overflowWrap: 'break-word' }}
+          >
             {description}
           </Typography>
         ) : null}

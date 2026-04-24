@@ -1,74 +1,79 @@
-import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
 
-export const PresetButton = styled('button')(({ theme }) => ({
-  padding: '5px 12px',
-  height: 32,
+export const PresetButton = styled('button')({
+  padding: '3px 10px',
+  height: 26,
   borderRadius: 'var(--radius-sm)',
-  fontFamily: 'inherit',
   fontSize: 'var(--font-size-sm)',
   fontWeight: 600,
   lineHeight: 1,
   cursor: 'pointer',
-  border: `1px solid ${theme.palette.divider}`,
+  border: '1px solid hsl(var(--border))',
   background: 'hsl(var(--secondary))',
   color: 'hsl(var(--foreground))',
-  transition: 'background-color .2s ease, color .2s ease, border-color .2s ease, filter .2s ease',
+  transition: 'background .15s ease, color .15s ease, border-color .15s ease',
 
   '&:hover': {
-    filter: 'brightness(0.97)',
+    background: 'var(--gradient-primary)',
+    color: 'hsl(var(--primary-foreground))',
+    borderColor: 'transparent',
   },
 
   '&[data-active="true"]': {
-    background: 'hsl(var(--primary))',
+    background: 'var(--gradient-primary)',
     color: 'hsl(var(--primary-foreground))',
-    borderColor: 'hsl(var(--primary))',
+    borderColor: 'transparent',
   },
 
   '&[data-active="true"]:hover': {
     filter: 'brightness(1.08)',
   },
-}))
+})
 
-export const LoanParameterCard = styled(Paper)(({ theme }) => ({
-  padding: 'var(--space-5)',
+export const LoanParameterCard = styled('div')({
+  padding: '12px 16px',
   borderRadius: 'var(--radius-lg)',
-  border: `1px solid ${theme.palette.divider}`,
-  boxShadow: 'none',
-
-  [theme.breakpoints.up('sm')]: {
-    padding: 'var(--space-7)',
-  },
-}))
+  background: 'hsl(var(--card))',
+  boxShadow: 'var(--shadow-soft)',
+})
 
 export const LoanParameterHeader = styled('div')({
   display: 'flex',
   alignItems: 'baseline',
   justifyContent: 'space-between',
-  marginBottom: 'var(--space-2)',
+  marginBottom: 24,
 })
 
 export const LoanParameterLabel = styled(Typography)({
+  display: 'flex',
+  flexDirection: 'column',
   fontWeight: 600,
   letterSpacing: '0.08em',
+  alignItems: 'flex-start',
 })
 
 export const LoanParameterValue = styled(Typography)({
-  fontSize: 'var(--font-size-4xl)',
+  fontSize: '2rem',
   fontWeight: 800,
   lineHeight: 1.1,
-  marginBottom: 'var(--space-4)',
+  letterSpacing: '-0.03em',
+  marginBottom: 4,
+  background: 'var(--gradient-primary)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text',
+  fontVariantNumeric: 'tabular-nums',
 })
 
 export const LoanParameterUnit = styled('span')({
-  fontSize: 'var(--font-size-xl)',
+  fontSize: '1rem',
   fontWeight: 600,
 })
 
 export const LoanPresetList = styled('div')({
   display: 'flex',
   flexWrap: 'wrap',
-  gap: 'var(--space-3)',
-  marginTop: 'var(--space-8)',
+  gap: 'var(--space-2)',
+  marginTop: 'var(--space-2)',
 })
