@@ -3,6 +3,7 @@ import { createTheme } from '@mui/material/styles'
 const v = (name: string) => `hsl(var(${name}))`
 const s = (name: string) => `var(${name})`
 
+// Material UI is used for accessible, consistent form controls and theming.
 export const appTheme = createTheme({
   cssVariables: false,
   palette: {

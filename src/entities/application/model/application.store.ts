@@ -9,6 +9,7 @@ type ApplicationFormStore = {
   resetFormData: () => void
 }
 
+// Zustand keeps the form data available across routed steps without prop drilling.
 export const useApplicationFormStore = create<ApplicationFormStore>()(
   persist(
     set => ({

@@ -20,6 +20,7 @@ export function usePersonalInfoForm(): StepFormResult<PersonalInfoFormValues> {
     handleSubmit,
     formState: { errors },
   } = useForm<PersonalInfoFormValues>({
+    // React Hook Form keeps field state lightweight; Zod provides typed validation.
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
       phone: formData.phone,
