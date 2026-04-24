@@ -18,6 +18,8 @@ export default function LoanParametersPage() {
     isSubmitting,
     submitError,
     submitDialogStatus,
+    validationErrors,
+    clearValidationError,
     closeSubmitDialog,
     resetApplication,
   } = useLoanParametersForm()
@@ -38,8 +40,14 @@ export default function LoanParametersPage() {
         }
       >
         <Stack spacing={3}>
-          <LoanAmountSection />
-          <LoanPeriodDaysSection />
+          <LoanAmountSection
+            error={validationErrors.amount}
+            onClearError={() => clearValidationError('amount')}
+          />
+          <LoanPeriodDaysSection
+            error={validationErrors.periodDays}
+            onClearError={() => clearValidationError('periodDays')}
+          />
           <LoanApplicationSummary />
         </Stack>
       </FormStepLayout>

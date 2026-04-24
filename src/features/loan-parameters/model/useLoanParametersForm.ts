@@ -2,13 +2,28 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useApplicationFormStore } from '@/entities/application'
-import { submitErrors } from '@/shared/i18n/en'
 import { APP_ROUTES } from '@/shared/constants/routes'
+import { submitErrors } from '@/shared/i18n/en'
 
 import { HttpError } from '../api/submitLoanApplication'
+import { loanParametersSchema, type LoanParametersFormValues } from './loan-parameters.schema'
 import { useSubmitLoanApplication } from './useSubmitLoanApplication'
 
 type SubmitDialogStatus = 'success' | 'error'
+type ValidationErrors = Partial<Record<keyof LoanParametersFormValues, string>>
+
+const getValidationErrors = (
+  issues: Array<{ path: PropertyKey[]; message: string }>,
+): ValidationErrors =>
+  issues.reduce<ValidationErrors>((errors, issue) => {
+    const field = issue.path[0]
+
+    if (field === 'amount' || field === 'periodDays') {
+      errors[field] = issue.message
+    }
+
+    return errors
+  }, {})
 
 export function useLoanParametersForm() {
   const navigate = useNavigate()
@@ -18,6 +33,7 @@ export function useLoanParametersForm() {
   const resetFormData = useApplicationFormStore(s => s.resetFormData)
 
   const [submitDialogStatus, setSubmitDialogStatus] = useState<SubmitDialogStatus | null>(null)
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({})
 
   const {
     mutate: submitApplication,
@@ -29,6 +45,21 @@ export function useLoanParametersForm() {
   const onSubmit = (e: { preventDefault(): void }) => {
     e.preventDefault()
     resetSubmitState()
+
+    const { amount, periodDays } = useApplicationFormStore.getState().formData
+
+    const validationResult = loanParametersSchema.safeParse({
+      amount,
+      periodDays,
+    })
+
+    if (!validationResult.success) {
+      setValidationErrors(getValidationErrors(validationResult.error.issues))
+      return
+    }
+
+    setValidationErrors({})
+
     submitApplication(
       { firstName, lastName },
       {
@@ -36,6 +67,17 @@ export function useLoanParametersForm() {
         onError: () => setSubmitDialogStatus('error'),
       },
     )
+  }
+
+  const clearValidationError = (field: keyof ValidationErrors) => {
+    setValidationErrors(prev => {
+      if (!prev[field]) return prev
+
+      const next = { ...prev }
+      delete next[field]
+
+      return next
+    })
   }
 
   const onBackClick = () => navigate(APP_ROUTES.addressWork)
@@ -64,6 +106,8 @@ export function useLoanParametersForm() {
     isSubmitting,
     submitError,
     submitDialogStatus,
+    validationErrors,
+    clearValidationError,
     closeSubmitDialog,
     resetApplication,
   }

@@ -2,10 +2,9 @@ import { renderHook, act } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type * as ReactRouterDom from 'react-router-dom'
 
-import { APPLICATION_DEFAULTS } from '@/entities/application'
-import { useApplicationFormStore } from '@/entities/application'
+import { APPLICATION_DEFAULTS, useApplicationFormStore } from '@/entities/application'
 import { APP_ROUTES } from '@/shared/constants/routes'
-import { submitErrors } from '@/shared/i18n/en'
+import { en, submitErrors } from '@/shared/i18n/en'
 
 import { HttpError } from '../api/submitLoanApplication'
 import { useLoanParametersForm } from './useLoanParametersForm'
@@ -22,11 +21,7 @@ type SubmitCallbacks = {
 
 vi.mock('react-router-dom', async () => {
   const actual: typeof ReactRouterDom = await vi.importActual('react-router-dom')
-
-  return {
-    ...actual,
-    useNavigate: () => mockNavigate,
-  }
+  return { ...actual, useNavigate: () => mockNavigate }
 })
 
 vi.mock('./useSubmitLoanApplication', () => ({
@@ -44,13 +39,8 @@ describe('useLoanParametersForm', () => {
     vi.clearAllMocks()
     sessionStorage.clear()
     useApplicationFormStore.setState({
-      formData: {
-        ...APPLICATION_DEFAULTS,
-        firstName: 'John',
-        lastName: 'Doe',
-      },
+      formData: { ...APPLICATION_DEFAULTS, firstName: 'John', lastName: 'Doe' },
     })
-
     mockUseSubmitLoanApplication.mockReturnValue({
       mutate: mockMutate,
       isPending: false,
@@ -62,57 +52,78 @@ describe('useLoanParametersForm', () => {
   it('submits applicant name through mutation', () => {
     const { result } = renderHook(() => useLoanParametersForm())
 
-    act(() => {
-      result.current.onSubmit({
-        preventDefault: vi.fn(),
-      })
-    })
+    act(() => result.current.onSubmit({ preventDefault: vi.fn() }))
 
     expect(mockReset).toHaveBeenCalled()
     const [payload, callbacks] = mockMutate.mock.calls[0] as [
       { firstName: string; lastName: string },
       SubmitCallbacks,
     ]
-
     expect(payload).toEqual({ firstName: 'John', lastName: 'Doe' })
     expect(callbacks.onSuccess).toEqual(expect.any(Function))
     expect(callbacks.onError).toEqual(expect.any(Function))
   })
 
   it('opens success dialog when mutation succeeds', () => {
-    mockMutate.mockImplementation(
-      (_payload: { firstName: string; lastName: string }, options: SubmitCallbacks) => {
-        options.onSuccess()
-      },
-    )
-
+    mockMutate.mockImplementation((_: unknown, options: SubmitCallbacks) => options.onSuccess())
     const { result } = renderHook(() => useLoanParametersForm())
 
-    act(() => {
-      result.current.onSubmit({
-        preventDefault: vi.fn(),
-      })
-    })
+    act(() => result.current.onSubmit({ preventDefault: vi.fn() }))
 
     expect(result.current.submitDialogStatus).toBe('success')
   })
 
   it('opens error dialog when mutation fails', () => {
-    mockMutate.mockImplementation(
-      (_payload: { firstName: string; lastName: string }, options: SubmitCallbacks) => {
-        options.onError(new Error('boom'))
-      },
+    mockMutate.mockImplementation((_: unknown, options: SubmitCallbacks) =>
+      options.onError(new Error('boom')),
     )
-
     const { result } = renderHook(() => useLoanParametersForm())
 
-    act(() => {
-      result.current.onSubmit({
-        preventDefault: vi.fn(),
-      })
-    })
+    act(() => result.current.onSubmit({ preventDefault: vi.fn() }))
 
     expect(result.current.submitDialogStatus).toBe('error')
+  })
+
+  it('blocks submit and exposes validation errors when loan parameters are invalid', () => {
+    useApplicationFormStore.setState({
+      formData: {
+        ...APPLICATION_DEFAULTS,
+        firstName: 'John',
+        lastName: 'Doe',
+        amount: 9999,
+        periodDays: 99,
+      },
+    })
+    const { result } = renderHook(() => useLoanParametersForm())
+
+    act(() => result.current.onSubmit({ preventDefault: vi.fn() }))
+
+    expect(mockMutate).not.toHaveBeenCalled()
+    expect(result.current.validationErrors).toEqual({
+      amount: en.loanParameters.errors.amountInvalid,
+      periodDays: en.loanParameters.errors.termInvalid,
+    })
+  })
+
+  it('clears a specific validation error', () => {
+    useApplicationFormStore.setState({
+      formData: { ...APPLICATION_DEFAULTS, firstName: 'John', lastName: 'Doe', amount: 9999 },
+    })
+    const { result } = renderHook(() => useLoanParametersForm())
+
+    act(() => result.current.onSubmit({ preventDefault: vi.fn() }))
+    act(() => result.current.clearValidationError('amount'))
+
+    expect(result.current.validationErrors.amount).toBeUndefined()
+  })
+
+  it('does not show errors before submit is attempted', () => {
+    useApplicationFormStore.setState({
+      formData: { ...APPLICATION_DEFAULTS, firstName: 'John', lastName: 'Doe', amount: 9999 },
+    })
+    const { result } = renderHook(() => useLoanParametersForm())
+
+    expect(result.current.validationErrors).toEqual({})
   })
 
   it('maps server errors to user-friendly message', () => {
@@ -122,7 +133,6 @@ describe('useLoanParametersForm', () => {
       error: new HttpError(500),
       reset: mockReset,
     })
-
     const { result } = renderHook(() => useLoanParametersForm())
 
     expect(result.current.submitError).toBe(submitErrors.serverError)
@@ -135,7 +145,6 @@ describe('useLoanParametersForm', () => {
       error: new HttpError(400),
       reset: mockReset,
     })
-
     const { result } = renderHook(() => useLoanParametersForm())
 
     expect(result.current.submitError).toBe(submitErrors.generic)
@@ -144,21 +153,16 @@ describe('useLoanParametersForm', () => {
   it('navigates back to address work', () => {
     const { result } = renderHook(() => useLoanParametersForm())
 
-    act(() => {
-      result.current.onBackClick()
-    })
+    act(() => result.current.onBackClick())
 
     expect(mockNavigate).toHaveBeenCalledWith(APP_ROUTES.addressWork)
   })
 
   it('resetApplication clears store and navigates to root', () => {
     useApplicationFormStore.getState().updateFormData({ firstName: 'Alice', lastName: 'Smith' })
-
     const { result } = renderHook(() => useLoanParametersForm())
 
-    act(() => {
-      result.current.resetApplication()
-    })
+    act(() => result.current.resetApplication())
 
     expect(mockNavigate).toHaveBeenCalledWith(APP_ROUTES.root, { replace: true })
     expect(useApplicationFormStore.getState().formData).toEqual(APPLICATION_DEFAULTS)

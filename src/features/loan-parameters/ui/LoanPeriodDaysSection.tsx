@@ -10,21 +10,35 @@ import {
 } from '../model/loan-parameters.constants'
 import { LoanParameterSection } from './LoanParameterSection'
 
-export function LoanPeriodDaysSection() {
+type LoanPeriodDaysSectionProps = {
+  error?: string
+  onClearError?: () => void
+}
+
+export function LoanPeriodDaysSection({ error, onClearError }: LoanPeriodDaysSectionProps) {
   const periodDays = useApplicationFormStore(s => s.formData.periodDays)
   const updateFormData = useApplicationFormStore(s => s.updateFormData)
+
+  const handleChange = (value: number) => {
+    updateFormData({ periodDays: value })
+
+    if (error) {
+      onClearError?.()
+    }
+  }
 
   return (
     <LoanParameterSection
       title={en.loanParameters.loanTerm}
       value={periodDays}
-      onChange={value => updateFormData({ periodDays: value })}
+      onChange={handleChange}
       min={LOAN_TERM_MIN}
       max={LOAN_TERM_MAX}
       step={LOAN_TERM_STEP}
       marks={LOAN_TERM_MARKS}
       presets={LOAN_TERM_PRESETS}
       valueUnit={en.loanParameters.days}
+      error={error}
     />
   )
 }
