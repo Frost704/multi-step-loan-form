@@ -13,14 +13,15 @@ type UseAddressWorkFormResult = StepFormWithBackResult<AddressWorkFormValues> & 
   placeOfWorkOptions: ReturnType<typeof usePlaceOfWorkOptions>['data']
   isOptionsLoading: boolean
   isOptionsError: boolean
-  refetchOptions: () => void
+  refetchOptions: () => Promise<void>
 }
 
 export function useAddressWorkForm(): UseAddressWorkFormResult {
   const navigate = useNavigate()
 
-  const formData = useApplicationFormStore(state => state.formData)
-  const updateFormData = useApplicationFormStore(state => state.updateFormData)
+  const placeOfWork = useApplicationFormStore(s => s.formData.placeOfWork)
+  const address = useApplicationFormStore(s => s.formData.address)
+  const updateFormData = useApplicationFormStore(s => s.updateFormData)
 
   const {
     data: placeOfWorkOptions,
@@ -29,8 +30,8 @@ export function useAddressWorkForm(): UseAddressWorkFormResult {
     refetch,
   } = usePlaceOfWorkOptions()
 
-  const refetchOptions = () => {
-    void refetch()
+  const refetchOptions = async () => {
+    await refetch()
   }
 
   const {
@@ -42,10 +43,8 @@ export function useAddressWorkForm(): UseAddressWorkFormResult {
   } = useForm<AddressWorkFormValues>({
     resolver: zodResolver(addressWorkSchema),
     values: {
-      placeOfWork: (placeOfWorkOptions ?? []).some(o => o.value === formData.placeOfWork)
-        ? formData.placeOfWork
-        : '',
-      address: formData.address,
+      placeOfWork: (placeOfWorkOptions ?? []).some(o => o.value === placeOfWork) ? placeOfWork : '',
+      address,
     },
     resetOptions: {
       keepDirtyValues: true,
@@ -60,7 +59,8 @@ export function useAddressWorkForm(): UseAddressWorkFormResult {
   }
 
   const onBackClick = () => {
-    updateFormData({ ...getValues(), placeOfWork: isOptionsError ? '' : getValues().placeOfWork })
+    const savedPlaceOfWork = isOptionsError ? '' : getValues().placeOfWork
+    updateFormData({ ...getValues(), placeOfWork: savedPlaceOfWork })
     navigate(APP_ROUTES.personalInfo)
   }
 

@@ -11,13 +11,6 @@ export type LoanApplication = {
   periodDays: number
 }
 
-export type LoanApplicationDraft = {
-  phone: string
-  firstName: string
-  lastName: string
+export type LoanApplicationDraft = Omit<LoanApplication, 'gender'> & {
   gender: Gender | null
-  placeOfWork: string
-  address: string
-  amount: number
-  periodDays: number
 }

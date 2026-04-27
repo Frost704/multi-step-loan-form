@@ -11,7 +11,6 @@ type ControlledSelectFieldProps<T extends FieldValues> = {
   required?: boolean
   disabled?: boolean
   fullWidth?: boolean
-  errorText?: string
   helperText?: string
 }
 
@@ -24,7 +23,6 @@ export function ControlledSelectField<T extends FieldValues>({
   required,
   disabled,
   fullWidth,
-  errorText,
   helperText,
 }: ControlledSelectFieldProps<T>) {
   return (
@@ -38,7 +36,7 @@ export function ControlledSelectField<T extends FieldValues>({
           value={field.value ?? ''}
           options={options}
           onChange={field.onChange}
-          error={fieldState.error?.message ?? errorText}
+          error={fieldState.error?.message}
           autoComplete={autoComplete}
           required={required}
           helperText={helperText}

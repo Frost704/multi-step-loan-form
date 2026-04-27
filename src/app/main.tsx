@@ -7,6 +7,7 @@ import { queryClient } from '@/app/query-client'
 import { ThemeProvider } from '@mui/material'
 import { appTheme } from '@/app/theme'
 import CssBaseline from '@mui/material/CssBaseline'
+import { ErrorBoundary } from '@/shared/ui/ErrorBoundary'
 import '../index.css'
 
 const rootElement = document.getElementById('root')
@@ -21,7 +22,9 @@ createRoot(rootElement).render(
       <CssBaseline />
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <AppRouter />
+          <ErrorBoundary>
+            <AppRouter />
+          </ErrorBoundary>
         </BrowserRouter>
       </QueryClientProvider>
     </ThemeProvider>

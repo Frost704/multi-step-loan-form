@@ -11,7 +11,7 @@ import { personalInfoSchema, type PersonalInfoFormValues } from './personal-info
 export function usePersonalInfoForm(): StepFormResult<PersonalInfoFormValues> {
   const navigate = useNavigate()
 
-  const formData = useApplicationFormStore(state => state.formData)
+  const { formData } = useApplicationFormStore.getState()
   const updateFormData = useApplicationFormStore(state => state.updateFormData)
 
   const {

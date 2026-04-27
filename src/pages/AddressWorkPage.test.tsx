@@ -4,27 +4,29 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import AddressWorkPage from './AddressWorkPage'
 
-const mockUseAddressWorkForm = vi.fn()
+type UseAddressWorkFormMock = {
+  control: object
+  register: () => {
+    name: string
+    onChange: () => void
+    onBlur: () => void
+    ref: () => void
+  }
+  handleSubmit: (submit: (values: unknown) => void) => (values: unknown) => void
+  errors: Record<string, { message?: string }>
+  onSubmit: () => void
+  onBackClick: () => void
+  placeOfWorkOptions: Array<{ value: string; label: string }>
+  isOptionsLoading: boolean
+  isOptionsError: boolean
+  refetchOptions: () => void
+}
 
-vi.mock('@/features/address-work/model/useAddressWorkForm', () => ({
-  useAddressWorkForm: () =>
-    mockUseAddressWorkForm() as {
-      control: object
-      register: () => {
-        name: string
-        onChange: () => void
-        onBlur: () => void
-        ref: () => void
-      }
-      handleSubmit: (submit: (values: unknown) => void) => (values: unknown) => void
-      errors: Record<string, { message?: string }>
-      onSubmit: () => void
-      onBackClick: () => void
-      placeOfWorkOptions: Array<{ value: string; label: string }>
-      isOptionsLoading: boolean
-      isOptionsError: boolean
-      refetchOptions: () => void
-    },
+const mockUseAddressWorkForm = vi.fn<() => UseAddressWorkFormMock>()
+
+vi.mock('@/features/address-work', () => ({
+  ADDRESS_TEXT_FIELD_MAX_LENGTH: 100,
+  useAddressWorkForm: () => mockUseAddressWorkForm(),
 }))
 
 vi.mock('@/shared/form/ControlledSelectField', () => ({

@@ -6,7 +6,9 @@ import { LOAN_APPLICATION_PROMO_POINTS } from '../model/constants'
 import {
   BrandIconBox,
   PromoBlob,
+  PromoBrandRow,
   PromoDotPattern,
+  PromoHeadlineContainer,
   PromoPointIconBox,
   PromoPointRow,
   PromoPoints,
@@ -36,7 +38,7 @@ export function LoanApplicationPromoRail() {
 
       <PromoDotPattern aria-hidden />
 
-      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+      <PromoBrandRow>
         <BrandIconBox>
           <BoltRoundedIcon sx={{ color: '#fff' }} />
         </BrandIconBox>
@@ -50,9 +52,9 @@ export function LoanApplicationPromoRail() {
             {en.layout.tagline}
           </Typography>
         </div>
-      </div>
+      </PromoBrandRow>
 
-      <div style={{ position: 'relative', maxWidth: 448 }}>
+      <PromoHeadlineContainer>
         <Typography
           sx={{
             color: '#fff',
@@ -69,7 +71,7 @@ export function LoanApplicationPromoRail() {
         <Typography sx={{ color: 'rgba(255,255,255,0.75)', fontSize: '1.05rem', lineHeight: 1.55 }}>
           {en.layout.subheadline}
         </Typography>
-      </div>
+      </PromoHeadlineContainer>
 
       <PromoPoints>
         {LOAN_APPLICATION_PROMO_POINTS.map(({ icon: Icon, title, text }) => (

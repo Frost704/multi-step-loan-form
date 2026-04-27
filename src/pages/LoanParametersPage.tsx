@@ -1,10 +1,12 @@
 import Stack from '@mui/material/Stack'
 
-import { useLoanParametersForm } from '@/features/loan-parameters/model/useLoanParametersForm'
-import { LoanAmountSection } from '@/features/loan-parameters/ui/LoanAmountSection'
-import { LoanApplicationSummary } from '@/features/loan-parameters/ui/LoanApplicationSummary'
-import { LoanPeriodDaysSection } from '@/features/loan-parameters/ui/LoanPeriodDaysSection'
-import { LoanSubmitDialog } from '@/features/loan-parameters/ui/LoanSubmitDialog'
+import {
+  useLoanParametersForm,
+  LoanAmountSection,
+  LoanApplicationSummary,
+  LoanPeriodDaysSection,
+  LoanSubmitDialog,
+} from '@/features/loan-parameters'
 import { en } from '@/shared/i18n/en'
 import { FormStepActions } from '@/shared/ui/FormStepActions'
 import { FormStepLayout } from '@/shared/ui/FormStepLayout'
@@ -18,6 +20,7 @@ export default function LoanParametersPage() {
     isSubmitting,
     submitError,
     submitDialogStatus,
+    snapshot,
     validationErrors,
     clearValidationError,
     closeSubmitDialog,
@@ -55,6 +58,7 @@ export default function LoanParametersPage() {
       <LoanSubmitDialog
         status={submitDialogStatus}
         error={submitError}
+        snapshot={snapshot}
         onSuccess={resetApplication}
         onClose={closeSubmitDialog}
       />

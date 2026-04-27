@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { APPLICATION_DEFAULTS } from './defaults'
 import { isAddressWorkComplete, isPersonalInfoComplete } from './application.selectors'
+import { APPLICATION_DEFAULTS } from './defaults'
 
 describe('application selectors', () => {
   it('detects completed personal info', () => {

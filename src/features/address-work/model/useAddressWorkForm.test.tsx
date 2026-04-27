@@ -8,8 +8,15 @@ import { APP_ROUTES } from '@/shared/constants/routes'
 
 import { useAddressWorkForm } from './useAddressWorkForm'
 
+type PlaceOfWorkOptionsMock = {
+  data?: Array<{ value: string; label: string }>
+  isLoading: boolean
+  isError: boolean
+  refetch: () => Promise<unknown>
+}
+
 const mockNavigate = vi.fn()
-const mockUsePlaceOfWorkOptions = vi.fn()
+const mockUsePlaceOfWorkOptions = vi.fn<() => PlaceOfWorkOptionsMock>()
 
 vi.mock('react-router-dom', async () => {
   const actual: typeof ReactRouterDom = await vi.importActual('react-router-dom')
@@ -21,13 +28,7 @@ vi.mock('react-router-dom', async () => {
 })
 
 vi.mock('./usePlaceOfWorkOptions', () => ({
-  usePlaceOfWorkOptions: () =>
-    mockUsePlaceOfWorkOptions() as {
-      data?: Array<{ value: string; label: string }>
-      isLoading: boolean
-      isError: boolean
-      refetch: () => Promise<unknown>
-    },
+  usePlaceOfWorkOptions: () => mockUsePlaceOfWorkOptions(),
 }))
 
 describe('useAddressWorkForm', () => {
@@ -116,7 +117,7 @@ describe('useAddressWorkForm', () => {
     expect(useApplicationFormStore.getState().formData.placeOfWork).toBe('')
   })
 
-  it('exposes retry function that calls refetch', () => {
+  it('exposes retry function that calls refetch', async () => {
     const refetch = vi.fn().mockResolvedValue(undefined)
 
     mockUsePlaceOfWorkOptions.mockReturnValue({
@@ -128,8 +129,8 @@ describe('useAddressWorkForm', () => {
 
     const { result } = renderHook(() => useAddressWorkForm())
 
-    act(() => {
-      result.current.refetchOptions()
+    await act(async () => {
+      await result.current.refetchOptions()
     })
 
     expect(refetch).toHaveBeenCalled()
