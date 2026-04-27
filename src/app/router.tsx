@@ -1,6 +1,3 @@
-import { APP_ROUTES } from '@/shared/constants/routes'
-import { RouteFallback } from '@/shared/ui/RouteFallback'
-
 import { lazy, Suspense, type ReactNode } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
@@ -10,6 +7,8 @@ import {
   useApplicationFormStore,
 } from '@/entities/application'
 import type { LoanApplicationDraft } from '@/entities/application'
+import { APP_ROUTES } from '@/shared/constants/routes'
+import { RouteFallback } from '@/shared/ui/RouteFallback'
 import { Layout } from '@/widgets/loan-application-layout/ui/Layout'
 
 const PersonalInfoPage = lazy(() => import('@/pages/PersonalInfoPage'))
@@ -48,7 +47,10 @@ export function AppRouter() {
           <Route
             path={APP_ROUTES.loanParameters}
             element={
-              <RequireStep select={isAddressWorkComplete} redirectTo={APP_ROUTES.addressWork}>
+              <RequireStep
+                select={d => isPersonalInfoComplete(d) && isAddressWorkComplete(d)}
+                redirectTo={APP_ROUTES.addressWork}
+              >
                 <LoanParametersPage />
               </RequireStep>
             }

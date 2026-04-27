@@ -1,7 +1,7 @@
 import { createTheme } from '@mui/material/styles'
 
-const v = (name: string) => `hsl(var(${name}))`
-const s = (name: string) => `var(${name})`
+const hslVar = (name: string) => `hsl(var(${name}))`
+const cssVar = (name: string) => `var(${name})`
 
 // Material UI is used for accessible, consistent form controls and theming.
 export const appTheme = createTheme({
@@ -9,30 +9,30 @@ export const appTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: v('--primary'),
-      contrastText: v('--primary-foreground'),
+      main: hslVar('--primary'),
+      contrastText: hslVar('--primary-foreground'),
     },
     secondary: {
-      main: v('--accent'),
-      contrastText: v('--accent-foreground'),
+      main: hslVar('--accent'),
+      contrastText: hslVar('--accent-foreground'),
     },
     background: {
       default: 'transparent',
-      paper: v('--card'),
+      paper: hslVar('--card'),
     },
     text: {
-      primary: v('--foreground'),
-      secondary: v('--muted-foreground'),
+      primary: hslVar('--foreground'),
+      secondary: hslVar('--muted-foreground'),
     },
     error: {
-      main: v('--destructive'),
-      contrastText: v('--destructive-foreground'),
+      main: hslVar('--destructive'),
+      contrastText: hslVar('--destructive-foreground'),
     },
     success: {
-      main: v('--success'),
-      contrastText: v('--success-foreground'),
+      main: hslVar('--success'),
+      contrastText: hslVar('--success-foreground'),
     },
-    divider: v('--border'),
+    divider: hslVar('--border'),
   },
   shape: {
     borderRadius: 16,
@@ -78,7 +78,7 @@ export const appTheme = createTheme({
           minHeight: '100%',
           background: 'var(--gradient-hero)',
           backgroundAttachment: 'fixed',
-          color: v('--foreground'),
+          color: hslVar('--foreground'),
           WebkitFontSmoothing: 'antialiased',
         },
         '#root': {
@@ -91,10 +91,10 @@ export const appTheme = createTheme({
       styleOverrides: {
         root: {
           backgroundImage: 'none',
-          color: v('--foreground'),
+          color: hslVar('--foreground'),
         },
         rounded: {
-          borderRadius: s('--radius-lg'),
+          borderRadius: cssVar('--radius-lg'),
         },
       },
     },
@@ -105,15 +105,15 @@ export const appTheme = createTheme({
       },
       styleOverrides: {
         root: {
-          borderRadius: s('--radius-sm'),
-          paddingInline: s('--space-6'),
+          borderRadius: cssVar('--radius-sm'),
+          paddingInline: cssVar('--space-6'),
           paddingBlock: 6,
-          fontSize: s('--font-size-md'),
+          fontSize: cssVar('--font-size-md'),
           boxShadow: 'none',
           '&.Mui-disabled': {
-            color: v('--muted-foreground'),
-            background: v('--muted'),
-            borderColor: v('--border'),
+            color: hslVar('--muted-foreground'),
+            background: hslVar('--muted'),
+            borderColor: hslVar('--border'),
             boxShadow: 'none',
             filter: 'none',
             transform: 'none',
@@ -121,19 +121,19 @@ export const appTheme = createTheme({
         },
         outlined: {
           borderWidth: 1.5,
-          borderColor: v('--border'),
-          color: v('--foreground'),
-          background: v('--card'),
+          borderColor: hslVar('--border'),
+          color: hslVar('--foreground'),
+          background: hslVar('--card'),
           '&:hover': {
             borderWidth: 1.5,
-            borderColor: v('--primary'),
-            background: v('--secondary'),
+            borderColor: hslVar('--primary'),
+            background: hslVar('--secondary'),
           },
           '&.Mui-disabled': {
             borderWidth: 1.5,
-            borderColor: v('--border'),
-            color: v('--muted-foreground'),
-            background: v('--muted'),
+            borderColor: hslVar('--border'),
+            color: hslVar('--muted-foreground'),
+            background: hslVar('--muted'),
           },
         },
       },
@@ -142,15 +142,15 @@ export const appTheme = createTheme({
           props: { variant: 'contained', color: 'primary' },
           style: {
             background: 'var(--gradient-primary)',
-            color: v('--primary-foreground'),
+            color: hslVar('--primary-foreground'),
             boxShadow: 'var(--shadow-soft)',
             '&:hover': {
               background: 'var(--gradient-primary)',
               filter: 'brightness(1.1)',
             },
             '&.Mui-disabled': {
-              background: v('--muted'),
-              color: v('--muted-foreground'),
+              background: hslVar('--muted'),
+              color: hslVar('--muted-foreground'),
             },
           },
         },
@@ -167,37 +167,37 @@ export const appTheme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          borderRadius: s('--radius-sm'),
-          background: v('--card'),
-          color: v('--foreground'),
-          transition: s('--transition-smooth'),
+          borderRadius: cssVar('--radius-sm'),
+          background: hslVar('--card'),
+          color: hslVar('--foreground'),
+          transition: cssVar('--transition-smooth'),
           '& fieldset': {
-            borderColor: v('--border'),
-            transition: s('--transition-smooth'),
+            borderColor: hslVar('--border'),
+            transition: cssVar('--transition-smooth'),
           },
           '&:hover fieldset': {
-            borderColor: v('--primary'),
+            borderColor: hslVar('--primary'),
           },
           '&.Mui-focused fieldset': {
             borderWidth: 2,
-            borderColor: v('--primary'),
+            borderColor: hslVar('--primary'),
           },
           '&.Mui-error fieldset': {
-            borderColor: v('--destructive'),
+            borderColor: hslVar('--destructive'),
           },
           '&.Mui-error:hover fieldset': {
-            borderColor: v('--destructive'),
+            borderColor: hslVar('--destructive'),
           },
           '&.Mui-error.Mui-focused fieldset': {
-            borderColor: v('--destructive'),
+            borderColor: hslVar('--destructive'),
           },
         },
         input: {
-          color: v('--foreground'),
+          color: hslVar('--foreground'),
           padding: '16px 14px',
         },
         notchedOutline: {
-          borderColor: v('--border'),
+          borderColor: hslVar('--border'),
         },
       },
     },
@@ -205,16 +205,16 @@ export const appTheme = createTheme({
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          color: v('--muted-foreground'),
+          color: hslVar('--muted-foreground'),
           fontWeight: 500,
           '&.Mui-focused': {
-            color: v('--primary'),
+            color: hslVar('--primary'),
           },
           '&.Mui-error': {
-            color: v('--destructive'),
+            color: hslVar('--destructive'),
           },
           '&.Mui-error.Mui-focused': {
-            color: v('--destructive'),
+            color: hslVar('--destructive'),
           },
         },
       },
@@ -226,7 +226,7 @@ export const appTheme = createTheme({
           marginInline: 4,
           fontWeight: 500,
           '&.Mui-error': {
-            color: v('--destructive'),
+            color: hslVar('--destructive'),
           },
         },
       },
@@ -235,7 +235,7 @@ export const appTheme = createTheme({
     MuiSelect: {
       styleOverrides: {
         icon: {
-          color: v('--muted-foreground'),
+          color: hslVar('--muted-foreground'),
         },
       },
     },
@@ -243,8 +243,8 @@ export const appTheme = createTheme({
     MuiMenu: {
       styleOverrides: {
         paper: {
-          borderRadius: s('--radius-sm'),
-          border: `1px solid ${v('--border')}`,
+          borderRadius: cssVar('--radius-sm'),
+          border: `1px solid ${hslVar('--border')}`,
           boxShadow: 'var(--shadow-elegant)',
           marginTop: 6,
         },
@@ -257,17 +257,17 @@ export const appTheme = createTheme({
     MuiMenuItem: {
       styleOverrides: {
         root: {
-          borderRadius: s('--radius-sm'),
+          borderRadius: cssVar('--radius-sm'),
           margin: '2px 0',
           fontWeight: 500,
           '&:hover': {
-            background: v('--secondary'),
+            background: hslVar('--secondary'),
           },
           '&.Mui-selected': {
-            background: v('--secondary'),
+            background: hslVar('--secondary'),
           },
           '&.Mui-selected:hover': {
-            background: v('--secondary'),
+            background: hslVar('--secondary'),
           },
         },
       },
@@ -276,13 +276,13 @@ export const appTheme = createTheme({
     MuiSlider: {
       styleOverrides: {
         root: {
-          color: v('--primary'),
+          color: hslVar('--primary'),
           height: 10,
           padding: '16px 0',
         },
         rail: {
           opacity: 0.25,
-          background: v('--muted-foreground'),
+          background: hslVar('--muted-foreground'),
           height: 10,
         },
         track: {
@@ -293,8 +293,8 @@ export const appTheme = createTheme({
         thumb: {
           width: 28,
           height: 28,
-          background: v('--popover'),
-          border: `3px solid ${v('--primary')}`,
+          background: hslVar('--popover'),
+          border: `3px solid ${hslVar('--primary')}`,
           boxShadow: 'var(--shadow-soft)',
           '&:hover, &.Mui-focusVisible': {
             boxShadow: 'var(--shadow-glow)',
@@ -305,12 +305,12 @@ export const appTheme = createTheme({
         },
         valueLabel: {
           background: 'var(--gradient-primary)',
-          borderRadius: s('--radius-sm'),
+          borderRadius: cssVar('--radius-sm'),
           fontWeight: 700,
           padding: '4px 10px',
         },
         mark: {
-          background: v('--muted-foreground'),
+          background: hslVar('--muted-foreground'),
           opacity: 0.4,
           height: 6,
           width: 2,
@@ -320,8 +320,8 @@ export const appTheme = createTheme({
           background: 'transparent',
         },
         markLabel: {
-          color: v('--muted-foreground'),
-          fontSize: s('--font-size-xs'),
+          color: hslVar('--muted-foreground'),
+          fontSize: cssVar('--font-size-xs'),
           fontWeight: 500,
           marginTop: 4,
         },
@@ -331,10 +331,10 @@ export const appTheme = createTheme({
     MuiDialog: {
       styleOverrides: {
         paper: {
-          borderRadius: s('--radius-lg'),
+          borderRadius: cssVar('--radius-lg'),
           boxShadow: 'var(--shadow-elegant)',
           background: 'var(--gradient-card)',
-          border: `1px solid ${v('--border')}`,
+          border: `1px solid ${hslVar('--border')}`,
         },
       },
     },

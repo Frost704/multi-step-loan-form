@@ -3,9 +3,9 @@ import TextField from '@mui/material/TextField'
 import {
   GENDER_OPTIONS,
   NAME_TEXT_FIELD_MAX_LENGTH,
-} from '@/features/personal-info/model/personal-info.constants'
-import { usePersonalInfoForm } from '@/features/personal-info/model/usePersonalInfoForm'
-import { PhoneField } from '@/features/personal-info/ui/PhoneField'
+  usePersonalInfoForm,
+  PhoneField,
+} from '@/features/personal-info'
 import { ControlledSelectField } from '@/shared/form/ControlledSelectField'
 import { en } from '@/shared/i18n/en'
 import { FormStepActions } from '@/shared/ui/FormStepActions'

@@ -1,3 +1,5 @@
+import { useId } from 'react'
+
 import type { SelectOption } from '@/shared/types/select-option'
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material'
 
@@ -28,9 +30,10 @@ export function BaseSelectField({
   fullWidth = true,
   helperText,
 }: BaseSelectFieldProps) {
-  const inputId = `${name}-input`
-  const labelId = `${name}-label`
-  const helperTextId = `${name}-helper-text`
+  const id = useId()
+  const inputId = `${id}-input`
+  const labelId = `${id}-label`
+  const helperTextId = `${id}-helper-text`
 
   return (
     <FormControl
@@ -49,6 +52,7 @@ export function BaseSelectField({
         value={value}
         inputProps={{
           id: inputId,
+          name,
           autoComplete,
           'aria-describedby': helperTextId,
         }}
@@ -61,7 +65,7 @@ export function BaseSelectField({
         ))}
       </Select>
 
-      <FormHelperText>{error ?? helperText ?? ' '}</FormHelperText>
+      <FormHelperText id={helperTextId}>{error ?? helperText ?? ' '}</FormHelperText>
     </FormControl>
   )
 }

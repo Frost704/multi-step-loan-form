@@ -1,3 +1,4 @@
+import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -5,12 +6,18 @@ import { useApplicationFormStore } from '@/entities/application'
 import { APP_ROUTES } from '@/shared/constants/routes'
 import { submitErrors } from '@/shared/i18n/en'
 
-import { HttpError } from '../api/submitLoanApplication'
+import { HttpError, submitLoanApplication } from '../api/submitLoanApplication'
 import { loanParametersSchema, type LoanParametersFormValues } from './loan-parameters.schema'
-import { useSubmitLoanApplication } from './useSubmitLoanApplication'
 
 type SubmitDialogStatus = 'success' | 'error'
 type ValidationErrors = Partial<Record<keyof LoanParametersFormValues, string>>
+
+export type SubmittedSnapshot = {
+  firstName: string
+  lastName: string
+  amount: number
+  periodDays: number
+}
 
 const getValidationErrors = (
   issues: Array<{ path: PropertyKey[]; message: string }>,
@@ -27,31 +34,26 @@ const getValidationErrors = (
 
 export function useLoanParametersForm() {
   const navigate = useNavigate()
-
-  const firstName = useApplicationFormStore(s => s.formData.firstName)
-  const lastName = useApplicationFormStore(s => s.formData.lastName)
   const resetFormData = useApplicationFormStore(s => s.resetFormData)
 
   const [submitDialogStatus, setSubmitDialogStatus] = useState<SubmitDialogStatus | null>(null)
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({})
+  const [snapshot, setSnapshot] = useState<SubmittedSnapshot | null>(null)
 
   const {
     mutate: submitApplication,
     isPending: isSubmitting,
     error,
     reset: resetSubmitState,
-  } = useSubmitLoanApplication()
+  } = useMutation({ mutationFn: submitLoanApplication })
 
   const onSubmit = (e: { preventDefault(): void }) => {
     e.preventDefault()
     resetSubmitState()
 
-    const { amount, periodDays } = useApplicationFormStore.getState().formData
+    const { amount, periodDays, firstName, lastName } = useApplicationFormStore.getState().formData
 
-    const validationResult = loanParametersSchema.safeParse({
-      amount,
-      periodDays,
-    })
+    const validationResult = loanParametersSchema.safeParse({ amount, periodDays })
 
     if (!validationResult.success) {
       setValidationErrors(getValidationErrors(validationResult.error.issues))
@@ -59,6 +61,7 @@ export function useLoanParametersForm() {
     }
 
     setValidationErrors({})
+    setSnapshot({ firstName, lastName, amount, periodDays })
 
     submitApplication(
       { firstName, lastName },
@@ -106,6 +109,7 @@ export function useLoanParametersForm() {
     isSubmitting,
     submitError,
     submitDialogStatus,
+    snapshot,
     validationErrors,
     clearValidationError,
     closeSubmitDialog,

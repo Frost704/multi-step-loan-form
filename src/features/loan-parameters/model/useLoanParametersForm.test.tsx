@@ -1,6 +1,7 @@
 import { renderHook, act } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type * as ReactRouterDom from 'react-router-dom'
+import type * as ReactQuery from '@tanstack/react-query'
 
 import { APPLICATION_DEFAULTS, useApplicationFormStore } from '@/entities/application'
 import { APP_ROUTES } from '@/shared/constants/routes'
@@ -9,30 +10,37 @@ import { en, submitErrors } from '@/shared/i18n/en'
 import { HttpError } from '../api/submitLoanApplication'
 import { useLoanParametersForm } from './useLoanParametersForm'
 
-const mockNavigate = vi.fn()
-const mockUseSubmitLoanApplication = vi.fn()
-const mockMutate = vi.fn()
-const mockReset = vi.fn()
-
 type SubmitCallbacks = {
   onSuccess: () => void
   onError: (error: Error) => void
 }
+
+const mockNavigate = vi.fn()
+const mockMutate =
+  vi.fn<(payload: { firstName: string; lastName: string }, callbacks: SubmitCallbacks) => void>()
+const mockReset = vi.fn<() => void>()
+
+type MutationMock = {
+  mutate: typeof mockMutate
+  isPending: boolean
+  error: Error | null
+  reset: typeof mockReset
+}
+
+const mockUseMutation = vi.fn<() => MutationMock>()
 
 vi.mock('react-router-dom', async () => {
   const actual: typeof ReactRouterDom = await vi.importActual('react-router-dom')
   return { ...actual, useNavigate: () => mockNavigate }
 })
 
-vi.mock('./useSubmitLoanApplication', () => ({
-  useSubmitLoanApplication: () =>
-    mockUseSubmitLoanApplication() as {
-      mutate: (payload: { firstName: string; lastName: string }, callbacks: SubmitCallbacks) => void
-      isPending: boolean
-      error: Error | null
-      reset: () => void
-    },
-}))
+vi.mock('@tanstack/react-query', async () => {
+  const actual: typeof ReactQuery = await vi.importActual('@tanstack/react-query')
+  return {
+    ...actual,
+    useMutation: () => mockUseMutation(),
+  }
+})
 
 describe('useLoanParametersForm', () => {
   beforeEach(() => {
@@ -41,7 +49,7 @@ describe('useLoanParametersForm', () => {
     useApplicationFormStore.setState({
       formData: { ...APPLICATION_DEFAULTS, firstName: 'John', lastName: 'Doe' },
     })
-    mockUseSubmitLoanApplication.mockReturnValue({
+    mockUseMutation.mockReturnValue({
       mutate: mockMutate,
       isPending: false,
       error: null,
@@ -55,17 +63,14 @@ describe('useLoanParametersForm', () => {
     act(() => result.current.onSubmit({ preventDefault: vi.fn() }))
 
     expect(mockReset).toHaveBeenCalled()
-    const [payload, callbacks] = mockMutate.mock.calls[0] as [
-      { firstName: string; lastName: string },
-      SubmitCallbacks,
-    ]
+    const [payload, callbacks] = mockMutate.mock.calls[0]
     expect(payload).toEqual({ firstName: 'John', lastName: 'Doe' })
     expect(callbacks.onSuccess).toEqual(expect.any(Function))
     expect(callbacks.onError).toEqual(expect.any(Function))
   })
 
   it('opens success dialog when mutation succeeds', () => {
-    mockMutate.mockImplementation((_: unknown, options: SubmitCallbacks) => options.onSuccess())
+    mockMutate.mockImplementation((_, options) => options.onSuccess())
     const { result } = renderHook(() => useLoanParametersForm())
 
     act(() => result.current.onSubmit({ preventDefault: vi.fn() }))
@@ -73,10 +78,30 @@ describe('useLoanParametersForm', () => {
     expect(result.current.submitDialogStatus).toBe('success')
   })
 
+  it('captures snapshot of submitted values before mutation', () => {
+    useApplicationFormStore.setState({
+      formData: {
+        ...APPLICATION_DEFAULTS,
+        firstName: 'Jane',
+        lastName: 'Smith',
+        amount: 300,
+        periodDays: 15,
+      },
+    })
+    const { result } = renderHook(() => useLoanParametersForm())
+
+    act(() => result.current.onSubmit({ preventDefault: vi.fn() }))
+
+    expect(result.current.snapshot).toEqual({
+      firstName: 'Jane',
+      lastName: 'Smith',
+      amount: 300,
+      periodDays: 15,
+    })
+  })
+
   it('opens error dialog when mutation fails', () => {
-    mockMutate.mockImplementation((_: unknown, options: SubmitCallbacks) =>
-      options.onError(new Error('boom')),
-    )
+    mockMutate.mockImplementation((_, options) => options.onError(new Error('boom')))
     const { result } = renderHook(() => useLoanParametersForm())
 
     act(() => result.current.onSubmit({ preventDefault: vi.fn() }))
@@ -127,7 +152,7 @@ describe('useLoanParametersForm', () => {
   })
 
   it('maps server errors to user-friendly message', () => {
-    mockUseSubmitLoanApplication.mockReturnValue({
+    mockUseMutation.mockReturnValue({
       mutate: mockMutate,
       isPending: false,
       error: new HttpError(500),
@@ -139,7 +164,7 @@ describe('useLoanParametersForm', () => {
   })
 
   it('maps non-server HttpError to generic message', () => {
-    mockUseSubmitLoanApplication.mockReturnValue({
+    mockUseMutation.mockReturnValue({
       mutate: mockMutate,
       isPending: false,
       error: new HttpError(400),

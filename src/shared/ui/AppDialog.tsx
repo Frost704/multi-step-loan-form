@@ -9,12 +9,13 @@ import {
   AppDialogIconSurface,
 } from './AppDialog.styles'
 
+type CloseReason = 'backdropClick' | 'escapeKeyDown'
+
 type AppDialogProps = {
   open: boolean
   title: ReactNode
-  onClose: () => void
+  onClose: (reason: CloseReason) => void
   description?: ReactNode
-  children?: ReactNode
   actions?: ReactNode
   icon?: ReactNode
   iconColor?: 'primary' | 'error' | 'success'
@@ -25,13 +26,12 @@ export function AppDialog({
   title,
   onClose,
   description,
-  children,
   actions,
   icon,
   iconColor = 'primary',
 }: AppDialogProps) {
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
+    <Dialog open={open} onClose={(_, reason) => onClose(reason)} maxWidth="xs" fullWidth>
       <AppDialogContent>
         {icon ? (
           <AppDialogIconSurface>
@@ -53,8 +53,6 @@ export function AppDialog({
             {description}
           </Typography>
         ) : null}
-
-        {children}
       </AppDialogContent>
 
       {actions ? <AppDialogActions>{actions}</AppDialogActions> : null}

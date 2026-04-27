@@ -107,6 +107,24 @@ export const PromoPointIconBox = styled('div')({
   border: '1px solid hsl(var(--primary-foreground) / 0.18)',
 })
 
+export const PromoBrandRow = styled('div')({
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.75rem',
+})
+
+export const PromoHeadlineContainer = styled('div')({
+  position: 'relative',
+  maxWidth: 448,
+})
+
+export const MobileBrandContent = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  gap: 10,
+})
+
 export const FormColumn = styled('main')({
   display: 'flex',
   flexDirection: 'column',

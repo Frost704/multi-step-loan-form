@@ -27,11 +27,11 @@ export function FormStepLayout({
         onSubmit={onSubmit}
         sx={{ display: 'grid', gap: 'var(--space-4)' }}
       >
-        <Box component="div">
+        <Box>
           <Typography variant="h4" component="h1">
             {title}
           </Typography>
-          <Typography variant="body1" component="h2" color="text.secondary">
+          <Typography variant="body1" component="p" color="text.secondary">
             {description}
           </Typography>
         </Box>
